@@ -1,11 +1,13 @@
-import Player from "./player";
-import { dummyPlayers as players } from "../lib/dummyPlayers";
+import { getPlayers } from "@/app/lib/data";
+import Player from "@/app/ui/player";
 
-export default function PlayerList() {
+export default async function PlayerList() {
+  const players = await getPlayers();
+
   return (
     <div className="flex flex-col gap-4">
-      {players.map(({ name, level, team, bio }) => (
-        <Player name={name} level={level} team={team} bio={bio} key={name} />
+      {players.map(({ username, code }) => (
+        <Player username={username} code={code} key={code} />
       ))}
     </div>
   );

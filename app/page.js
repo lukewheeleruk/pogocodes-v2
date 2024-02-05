@@ -1,4 +1,4 @@
-import PlayerList from "./ui/player-list";
+import PlayerList from "@/app/ui/player-list";
 
 export default function Home() {
   return (
