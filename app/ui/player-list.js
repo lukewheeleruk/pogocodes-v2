@@ -16,6 +16,8 @@ export default function PlayerList({ initialPlayers, initialCursor }) {
     // the current players will need to still be there once we've added more, hence the destructuring
     // of the current players array state into the new one, before we add the new players
     const { additionalPlayers, newCursor } = await getAdditionalPlayers(cursor);
+    // get the next five players by passing in the current cursor and letting the getAdditionalPlayers
+    // function retrieve the relevant next entries from Firestore
     additionalPlayers.forEach((player) => {
       newPlayers.push(player);
     });
