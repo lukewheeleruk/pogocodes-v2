@@ -1,9 +1,10 @@
-import { getInitialData } from "@/app/lib/data";
+import { getInitialPlayers } from "@/app/lib/data";
 import PlayerList from "@/app/ui/player-list";
 
 export default async function Home({ searchParams }) {
-  const { initialPlayers, initialCursor } = await getInitialData(searchParams);
-  const initialTeam = searchParams?.team || null;
+  const { initialPlayers, initialCursor } = await getInitialPlayers(
+    searchParams
+  );
   return (
     <main className="flex justify-center">
       <PlayerList

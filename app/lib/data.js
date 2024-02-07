@@ -16,17 +16,33 @@ function justGetWhatWeNeed(playerObject) {
     username: playerObject.username,
     code: playerObject.code,
     team: playerObject.team,
+    tags: playerObject.tags,
   };
 }
 
-export async function getInitialData(searchParams) {
+export async function getInitialPlayers(searchParams) {
   const initialPlayers = [];
   let initialCursor = "";
   let q = null;
-  if (searchParams?.team) {
+  if (searchParams.team && searchParams.tags) {
     q = query(
       collection(db, "dev_profiles"),
       where("team", "==", searchParams.team),
+      where("tags", "array-contains", searchParams.tags),
+      orderBy("lastBump", "desc"),
+      limit(2)
+    );
+  } else if (searchParams.team && !searchParams.tags) {
+    q = query(
+      collection(db, "dev_profiles"),
+      where("team", "==", searchParams.team),
+      orderBy("lastBump", "desc"),
+      limit(2)
+    );
+  } else if (searchParams.tags && !searchParams.team) {
+    q = query(
+      collection(db, "dev_profiles"),
+      where("tags", "array-contains", searchParams.tags),
       orderBy("lastBump", "desc"),
       limit(2)
     );
@@ -37,6 +53,7 @@ export async function getInitialData(searchParams) {
       limit(2)
     );
   }
+
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     initialPlayers.push(justGetWhatWeNeed(doc.data()));
@@ -50,12 +67,30 @@ export async function getAdditionalPlayers(cursor, searchParams) {
   let newCursor = null;
   const docSnap = await getDoc(doc(db, "dev_profiles", cursor));
   let q = null;
-  if (searchParams?.team) {
+
+  if (searchParams.team && searchParams.tags) {
     q = query(
       collection(db, "dev_profiles"),
+      where("team", "==", searchParams.team),
+      where("tags", "array-contains", searchParams.tags),
       orderBy("lastBump", "desc"),
       limit(2),
+      startAfter(docSnap)
+    );
+  } else if (searchParams.team && !searchParams.tags) {
+    q = query(
+      collection(db, "dev_profiles"),
       where("team", "==", searchParams.team),
+      orderBy("lastBump", "desc"),
+      limit(2),
+      startAfter(docSnap)
+    );
+  } else if (searchParams.tags && !searchParams.team) {
+    q = query(
+      collection(db, "dev_profiles"),
+      where("tags", "array-contains", searchParams.tags),
+      orderBy("lastBump", "desc"),
+      limit(2),
       startAfter(docSnap)
     );
   } else {

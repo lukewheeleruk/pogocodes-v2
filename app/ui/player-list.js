@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAdditionalPlayers, getInitialData } from "@/app/lib/data";
+import { getAdditionalPlayers, getInitialPlayers } from "@/app/lib/data";
 import { useRouter, usePathname } from "next/navigation";
 import Player from "@/app/ui/player";
 
@@ -39,7 +39,12 @@ export default function PlayerList({
     } else {
       urlParams.delete("team");
     }
-    const { initialPlayers, initialCursor } = await getInitialData(
+    if (currentParams.tags) {
+      urlParams.set("tags", currentParams.tags);
+    } else {
+      urlParams.delete("tags");
+    }
+    const { initialPlayers, initialCursor } = await getInitialPlayers(
       currentParams
     );
     setPlayers(initialPlayers);
@@ -53,9 +58,17 @@ export default function PlayerList({
 
   const handleTeamChange = (team) => {
     if (!team) {
-      setCurrentParams({});
+      setCurrentParams({ ...currentParams, team: null });
     } else {
-      setCurrentParams({ team: team });
+      setCurrentParams({ ...currentParams, team: team });
+    }
+  };
+
+  const handleTagsChange = (tags) => {
+    if (!tags) {
+      setCurrentParams({ ...currentParams, tags: null });
+    } else {
+      setCurrentParams({ ...currentParams, tags: tags });
     }
   };
 
@@ -68,9 +81,23 @@ export default function PlayerList({
         <button onClick={() => handleTeamChange("instinct")}>Instinct</button>
       </div>
 
+      <div className="flex gap-4">
+        <button onClick={() => handleTagsChange()}>All tags</button>
+        <button onClick={() => handleTagsChange("gifts")}>Gifts</button>
+        <button onClick={() => handleTagsChange("raids")}>Raids</button>
+        <button onClick={() => handleTagsChange("pvp")}>PvP</button>
+        <button onClick={() => handleTagsChange("trades")}>Trades</button>
+      </div>
+
       <div className="flex flex-col gap-4">
-        {players.map(({ username, code, team }) => (
-          <Player username={username} code={code} team={team} key={code} />
+        {players.map(({ username, code, team, tags }) => (
+          <Player
+            username={username}
+            code={code}
+            team={team}
+            tags={tags}
+            key={code}
+          />
         ))}
       </div>
       <button onClick={loadMorePlayers}>Load more</button>
