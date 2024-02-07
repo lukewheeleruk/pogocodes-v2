@@ -1,11 +1,8 @@
 "use client";
-// this component is the core of our application, and is packed with interactivity (filters, loading more profiles, etc.)
-// and as such needs to be a CLIENT component
+
 import { useEffect, useState } from "react";
 import { getAdditionalPlayers, getInitialData } from "@/app/lib/data";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-// this getAdditionalPlayers function is what enables us to load more players into the list upon a button press in the UI,
-// beyond the five we initially receive from the page load on the server
 import Player from "@/app/ui/player";
 
 export default function PlayerList({
@@ -13,22 +10,21 @@ export default function PlayerList({
   initialCursor,
   searchParams,
 }) {
-  const [players, setPlayers] = useState(initialPlayers);
-  const [cursor, setCursor] = useState(initialCursor);
-  const [currentParams, setCurrentParams] = useState(searchParams);
+  // hooks
   const pathname = usePathname();
   const { replace } = useRouter();
 
+  // state
+  const [players, setPlayers] = useState(initialPlayers);
+  const [cursor, setCursor] = useState(initialCursor);
+  const [currentParams, setCurrentParams] = useState(searchParams);
+
   const loadMorePlayers = async () => {
     const newPlayers = [...players];
-    // the current players will need to still be there once we've added more, hence the destructuring
-    // of the current players array state into the new one, before we add the new players
     const { additionalPlayers, newCursor } = await getAdditionalPlayers(
       cursor,
       currentParams
     );
-    // get the next five players by passing in the current cursor and letting the getAdditionalPlayers
-    // function retrieve the relevant next entries from Firestore
     additionalPlayers.forEach((player) => {
       newPlayers.push(player);
     });
