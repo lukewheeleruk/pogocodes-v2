@@ -68,6 +68,8 @@ export default function PlayerList({
       <div className="flex gap-4">
         <button onClick={() => handleTeamChange()}>All teams</button>
         <button onClick={() => handleTeamChange("valor")}>Valor</button>
+        <button onClick={() => handleTeamChange("mystic")}>Mystic</button>
+        <button onClick={() => handleTeamChange("instinct")}>Instinct</button>
       </div>
 
       <div className="flex flex-col gap-4">
