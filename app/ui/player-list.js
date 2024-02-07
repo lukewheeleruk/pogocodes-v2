@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAdditionalPlayers, getInitialData } from "@/app/lib/data";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Player from "@/app/ui/player";
 
 export default function PlayerList({
