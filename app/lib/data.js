@@ -11,50 +11,34 @@ import {
   where,
 } from "firebase/firestore";
 
-function justGetWhatWeNeed(playerObject) {
+const justGetWhatWeNeed = (playerObject) => {
   return {
     username: playerObject.username,
     code: playerObject.code,
     team: playerObject.team,
     tags: playerObject.tags,
   };
-}
+};
+
+const buildFirestoreQuery = (filters, cursor) => {
+  let q = query(collection(db, "dev_profiles"));
+  if (filters.team) {
+    q = query(q, where("team", "==", filters.team));
+  }
+  if (filters.tags) {
+    q = query(q, where("tags", "array-contains", filters.tags));
+  }
+  q = query(q, orderBy("lastBump", "desc"), limit(2));
+  if (cursor) {
+    q = query(q, startAfter(cursor));
+  }
+  return q;
+};
 
 export async function getInitialPlayers(searchParams) {
   const initialPlayers = [];
-  let initialCursor = "";
-  let q = null;
-  if (searchParams.team && searchParams.tags) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("team", "==", searchParams.team),
-      where("tags", "array-contains", searchParams.tags),
-      orderBy("lastBump", "desc"),
-      limit(2)
-    );
-  } else if (searchParams.team && !searchParams.tags) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("team", "==", searchParams.team),
-      orderBy("lastBump", "desc"),
-      limit(2)
-    );
-  } else if (searchParams.tags && !searchParams.team) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("tags", "array-contains", searchParams.tags),
-      orderBy("lastBump", "desc"),
-      limit(2)
-    );
-  } else {
-    q = query(
-      collection(db, "dev_profiles"),
-      orderBy("lastBump", "desc"),
-      limit(2)
-    );
-  }
-
-  const querySnapshot = await getDocs(q);
+  let initialCursor = null;
+  const querySnapshot = await getDocs(buildFirestoreQuery(searchParams));
   querySnapshot.forEach((doc) => {
     initialPlayers.push(justGetWhatWeNeed(doc.data()));
     initialCursor = doc.id;
@@ -66,43 +50,9 @@ export async function getAdditionalPlayers(cursor, searchParams) {
   const additionalPlayers = [];
   let newCursor = null;
   const docSnap = await getDoc(doc(db, "dev_profiles", cursor));
-  let q = null;
-
-  if (searchParams.team && searchParams.tags) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("team", "==", searchParams.team),
-      where("tags", "array-contains", searchParams.tags),
-      orderBy("lastBump", "desc"),
-      limit(2),
-      startAfter(docSnap)
-    );
-  } else if (searchParams.team && !searchParams.tags) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("team", "==", searchParams.team),
-      orderBy("lastBump", "desc"),
-      limit(2),
-      startAfter(docSnap)
-    );
-  } else if (searchParams.tags && !searchParams.team) {
-    q = query(
-      collection(db, "dev_profiles"),
-      where("tags", "array-contains", searchParams.tags),
-      orderBy("lastBump", "desc"),
-      limit(2),
-      startAfter(docSnap)
-    );
-  } else {
-    q = query(
-      collection(db, "dev_profiles"),
-      orderBy("lastBump", "desc"),
-      limit(2),
-      startAfter(docSnap)
-    );
-  }
-
-  const querySnapshot = await getDocs(q);
+  const querySnapshot = await getDocs(
+    buildFirestoreQuery(searchParams, docSnap)
+  );
   querySnapshot.forEach((doc) => {
     additionalPlayers.push(justGetWhatWeNeed(doc.data()));
     newCursor = doc.id;

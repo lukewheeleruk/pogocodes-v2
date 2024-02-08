@@ -19,19 +19,6 @@ export default function PlayerList({
   const [cursor, setCursor] = useState(initialCursor);
   const [currentParams, setCurrentParams] = useState(searchParams);
 
-  const loadMorePlayers = async () => {
-    const newPlayers = [...players];
-    const { additionalPlayers, newCursor } = await getAdditionalPlayers(
-      cursor,
-      currentParams
-    );
-    additionalPlayers.forEach((player) => {
-      newPlayers.push(player);
-    });
-    setPlayers(newPlayers);
-    setCursor(newCursor);
-  };
-
   const refreshAfterParamsChange = async () => {
     const urlParams = new URLSearchParams(currentParams);
     if (currentParams.team) {
@@ -55,6 +42,19 @@ export default function PlayerList({
   useEffect(() => {
     refreshAfterParamsChange();
   }, [currentParams]);
+
+  const handleLoadMore = async () => {
+    const newPlayers = [...players];
+    const { additionalPlayers, newCursor } = await getAdditionalPlayers(
+      cursor,
+      currentParams
+    );
+    additionalPlayers.forEach((player) => {
+      newPlayers.push(player);
+    });
+    setPlayers(newPlayers);
+    setCursor(newCursor);
+  };
 
   const handleTeamChange = (team) => {
     if (!team) {
@@ -89,6 +89,13 @@ export default function PlayerList({
         <button onClick={() => handleTagsChange("trades")}>Trades</button>
       </div>
 
+      <form className="flex flex-col mt-8 mb-8">
+        <input name={"username"} placeholder="Username"></input>
+        <input name={"code"} placeholder="Friend code"></input>
+        <input name={"team"} placeholder="Team"></input>
+        <button>Submit</button>
+      </form>
+
       <div className="flex flex-col gap-4">
         {players.map(({ username, code, team, tags }) => (
           <Player
@@ -100,7 +107,7 @@ export default function PlayerList({
           />
         ))}
       </div>
-      <button onClick={loadMorePlayers}>Load more</button>
+      <button onClick={handleLoadMore}>Load more</button>
     </div>
   );
 }
