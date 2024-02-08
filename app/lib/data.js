@@ -35,16 +35,14 @@ const buildFirestoreQuery = (filters, cursor) => {
   return q;
 };
 
-export async function getPlayers(searchParams, cursorDocId) {
+export async function getPlayers(filters, cursorDocId) {
   const players = [];
   let cursor = null;
   let docSnap = null;
   if (cursorDocId) {
     docSnap = await getDoc(doc(db, "dev_profiles", cursorDocId));
   }
-  const querySnapshot = await getDocs(
-    buildFirestoreQuery(searchParams, docSnap)
-  );
+  const querySnapshot = await getDocs(buildFirestoreQuery(filters, docSnap));
   querySnapshot.forEach((doc) => {
     players.push(justGetWhatWeNeed(doc.data()));
     cursor = doc.id;

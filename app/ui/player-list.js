@@ -17,33 +17,33 @@ export default function PlayerList({
   // state
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
-  const [currentParams, setCurrentParams] = useState(searchParams);
+  const [filters, setFilters] = useState(searchParams);
 
-  const refreshAfterParamsChange = async () => {
-    const urlParams = new URLSearchParams(currentParams);
-    if (currentParams.team) {
-      urlParams.set("team", currentParams.team);
+  const refreshAfterFiltersChange = async () => {
+    const urlParams = new URLSearchParams(filters);
+    if (filters.team) {
+      urlParams.set("team", filters.team);
     } else {
       urlParams.delete("team");
     }
-    if (currentParams.tags) {
-      urlParams.set("tags", currentParams.tags);
+    if (filters.tags) {
+      urlParams.set("tags", filters.tags);
     } else {
       urlParams.delete("tags");
     }
-    const data = await getPlayers(currentParams);
+    const data = await getPlayers(filters);
     setPlayers(data.players);
     setCursor(data.cursor);
     replace(`${pathname}?${urlParams.toString()}`);
   };
 
   useEffect(() => {
-    refreshAfterParamsChange();
-  }, [currentParams]);
+    refreshAfterFiltersChange();
+  }, [filters]);
 
   const handleLoadMore = async () => {
     const newPlayers = [...players];
-    const data = await getPlayers(currentParams, cursor);
+    const data = await getPlayers(filters, cursor);
     data.players.forEach((player) => {
       newPlayers.push(player);
     });
@@ -53,17 +53,17 @@ export default function PlayerList({
 
   const handleTeamChange = (team) => {
     if (!team) {
-      setCurrentParams({ ...currentParams, team: null });
+      setFilters({ ...filters, team: null });
     } else {
-      setCurrentParams({ ...currentParams, team: team });
+      setFilters({ ...filters, team: team });
     }
   };
 
   const handleTagsChange = (tags) => {
     if (!tags) {
-      setCurrentParams({ ...currentParams, tags: null });
+      setFilters({ ...filters, tags: null });
     } else {
-      setCurrentParams({ ...currentParams, tags: tags });
+      setFilters({ ...filters, tags: tags });
     }
   };
 
