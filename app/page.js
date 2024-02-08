@@ -8,7 +8,7 @@ export default async function Home({ searchParams }) {
       <PlayerList
         initialPlayers={players}
         initialCursor={cursor}
-        searchParams={searchParams}
+        initialFilters={searchParams}
       />
     </main>
   );

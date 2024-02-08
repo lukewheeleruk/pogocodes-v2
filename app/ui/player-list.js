@@ -8,7 +8,7 @@ import Player from "@/app/ui/player";
 export default function PlayerList({
   initialPlayers,
   initialCursor,
-  searchParams,
+  initialFilters,
 }) {
   // hooks
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export default function PlayerList({
   // state
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
-  const [filters, setFilters] = useState(searchParams);
+  const [filters, setFilters] = useState(initialFilters);
 
   const refreshAfterFiltersChange = async () => {
     const urlParams = new URLSearchParams(filters);
