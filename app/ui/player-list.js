@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { getPlayers } from "@/app/lib/data";
 import { useRouter, usePathname } from "next/navigation";
+import { addProfile } from "@/app/lib/actions";
 import Player from "@/app/ui/player";
 
 export default function PlayerList({
@@ -10,6 +12,8 @@ export default function PlayerList({
   initialCursor,
   initialFilters,
 }) {
+  // refs
+  const ref = useRef(null);
   // hooks
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -67,6 +71,13 @@ export default function PlayerList({
     }
   };
 
+  const submitForm = async (formData) => {
+    await addProfile(formData);
+    const { players, cursor } = await getPlayers();
+    setPlayers(players);
+    setCursor(cursor);
+  };
+
   return (
     <div>
       <div className="flex gap-4">
@@ -84,7 +95,14 @@ export default function PlayerList({
         <button onClick={() => handleTagsChange("trades")}>Trades</button>
       </div>
 
-      <form className="flex flex-col mt-8 mb-8">
+      <form
+        ref={ref}
+        action={async (formData) => {
+          await submitForm(formData);
+          ref.current?.reset();
+        }}
+        className="flex flex-col mt-8 mb-8"
+      >
         <input name={"username"} placeholder="Username"></input>
         <input name={"code"} placeholder="Friend code"></input>
         <input name={"team"} placeholder="Team"></input>

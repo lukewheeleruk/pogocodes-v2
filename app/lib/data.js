@@ -22,10 +22,10 @@ const justGetWhatWeNeed = (playerObject) => {
 
 const buildFirestoreQuery = (filters, cursor) => {
   let q = query(collection(db, "dev_profiles"));
-  if (filters.team) {
+  if (filters?.team) {
     q = query(q, where("team", "==", filters.team));
   }
-  if (filters.tags) {
+  if (filters?.tags) {
     q = query(q, where("tags", "array-contains", filters.tags));
   }
   q = query(q, orderBy("lastBump", "desc"), limit(2));
