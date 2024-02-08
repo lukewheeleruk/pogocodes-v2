@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAdditionalPlayers, getInitialPlayers } from "@/app/lib/data";
+import { getPlayers } from "@/app/lib/data";
 import { useRouter, usePathname } from "next/navigation";
 import Player from "@/app/ui/player";
 
@@ -31,11 +31,9 @@ export default function PlayerList({
     } else {
       urlParams.delete("tags");
     }
-    const { initialPlayers, initialCursor } = await getInitialPlayers(
-      currentParams
-    );
-    setPlayers(initialPlayers);
-    setCursor(initialCursor);
+    const data = await getPlayers(currentParams);
+    setPlayers(data.players);
+    setCursor(data.cursor);
     replace(`${pathname}?${urlParams.toString()}`);
   };
 
@@ -45,15 +43,12 @@ export default function PlayerList({
 
   const handleLoadMore = async () => {
     const newPlayers = [...players];
-    const { additionalPlayers, newCursor } = await getAdditionalPlayers(
-      cursor,
-      currentParams
-    );
-    additionalPlayers.forEach((player) => {
+    const data = await getPlayers(currentParams, cursor);
+    data.players.forEach((player) => {
       newPlayers.push(player);
     });
     setPlayers(newPlayers);
-    setCursor(newCursor);
+    setCursor(data.cursor);
   };
 
   const handleTeamChange = (team) => {

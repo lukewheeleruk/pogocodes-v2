@@ -35,27 +35,19 @@ const buildFirestoreQuery = (filters, cursor) => {
   return q;
 };
 
-export async function getInitialPlayers(searchParams) {
-  const initialPlayers = [];
-  let initialCursor = null;
-  const querySnapshot = await getDocs(buildFirestoreQuery(searchParams));
-  querySnapshot.forEach((doc) => {
-    initialPlayers.push(justGetWhatWeNeed(doc.data()));
-    initialCursor = doc.id;
-  });
-  return { initialPlayers: initialPlayers, initialCursor: initialCursor };
-}
-
-export async function getAdditionalPlayers(cursor, searchParams) {
-  const additionalPlayers = [];
-  let newCursor = null;
-  const docSnap = await getDoc(doc(db, "dev_profiles", cursor));
+export async function getPlayers(searchParams, cursorDocId) {
+  const players = [];
+  let cursor = null;
+  let docSnap = null;
+  if (cursorDocId) {
+    docSnap = await getDoc(doc(db, "dev_profiles", cursorDocId));
+  }
   const querySnapshot = await getDocs(
     buildFirestoreQuery(searchParams, docSnap)
   );
   querySnapshot.forEach((doc) => {
-    additionalPlayers.push(justGetWhatWeNeed(doc.data()));
-    newCursor = doc.id;
+    players.push(justGetWhatWeNeed(doc.data()));
+    cursor = doc.id;
   });
-  return { additionalPlayers: additionalPlayers, newCursor: newCursor };
+  return { players: players, cursor: cursor };
 }
