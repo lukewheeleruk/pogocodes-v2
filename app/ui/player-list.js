@@ -100,6 +100,7 @@ export default function PlayerList({
         action={async (formData) => {
           await submitForm(formData);
           ref.current?.reset();
+          setFilters({ team: null, tags: null });
         }}
         className="flex flex-col mt-8 mb-8"
       >

@@ -17,4 +17,7 @@ export async function addProfile(formData) {
   await addDoc(collection(db, "dev_profiles"), rawFormData);
 
   console.log(rawFormData);
+
+  revalidatePath("/");
+  redirect("/");
 }
