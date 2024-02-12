@@ -17,6 +17,7 @@ const justGetWhatWeNeed = (playerObject) => {
     code: playerObject.code,
     team: playerObject.team,
     tags: playerObject.tags,
+    message: playerObject.message,
   };
 };
 

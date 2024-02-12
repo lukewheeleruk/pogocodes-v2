@@ -17,7 +17,6 @@ export default function PlayerList({
   // hooks
   const pathname = usePathname();
   const { replace } = useRouter();
-
   // state
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
@@ -107,16 +106,21 @@ export default function PlayerList({
         <input name={"username"} placeholder="Username"></input>
         <input name={"code"} placeholder="Friend code"></input>
         <input name={"team"} placeholder="Team"></input>
+        <textarea
+          name={"message"}
+          placeholder="Type your message here"
+        ></textarea>
         <button>Submit</button>
       </form>
 
       <div className="flex flex-col gap-4">
-        {players.map(({ username, code, team, tags }) => (
+        {players.map(({ username, code, team, tags, message }) => (
           <Player
             username={username}
             code={code}
             team={team}
             tags={tags}
+            message={message}
             key={code}
           />
         ))}

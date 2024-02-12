@@ -1,4 +1,4 @@
-export default function Player({ username, code, team, tags }) {
+export default function Player({ username, code, team, tags, message }) {
   return (
     <div className="w-96 border p-4">
       <h2>
@@ -10,6 +10,7 @@ export default function Player({ username, code, team, tags }) {
           <div key={tag}>{tag}</div>
         ))}
       </div>
+      <p>{message}</p>
     </div>
   );
 }

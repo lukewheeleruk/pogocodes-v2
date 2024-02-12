@@ -11,6 +11,7 @@ export async function addProfile(formData) {
     team: formData.get("team"),
     code: formData.get("code"),
     tags: formData.get("tags"),
+    message: formData.get("message"),
     lastBump: Timestamp.now(),
   };
 
