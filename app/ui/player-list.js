@@ -7,9 +7,20 @@ import { useRouter, usePathname } from "next/navigation";
 import { addProfile } from "@/app/lib/actions";
 import Player from "@/app/ui/player";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { updateLevelOnAllRecords } from "@/seed";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export default function PlayerList({
   initialPlayers,
@@ -58,19 +69,21 @@ export default function PlayerList({
     setCursor(data.cursor);
   };
 
-  const handleTeamChange = (team) => {
-    if (!team) {
+  const handleRadioTeamChange = (value) => {
+    console.log("The selected value is: ", value);
+    if (value === "all-teams") {
       setFilters({ ...filters, team: null });
     } else {
-      setFilters({ ...filters, team: team });
+      setFilters({ ...filters, team: value });
     }
   };
 
-  const handleTagsChange = (tags) => {
-    if (!tags) {
+  const handleRadioTagsChange = (value) => {
+    console.log("The selected value is: ", value);
+    if (value === "all-tags") {
       setFilters({ ...filters, tags: null });
     } else {
-      setFilters({ ...filters, tags: tags });
+      setFilters({ ...filters, tags: value });
     }
   };
 
@@ -82,48 +95,99 @@ export default function PlayerList({
   };
 
   return (
-    <div className="w-[800px]">
-      <div className="flex gap-4">
-        <button onClick={() => handleTeamChange()}>All teams</button>
-        <button onClick={() => handleTeamChange("valor")}>Valor</button>
-        <button onClick={() => handleTeamChange("mystic")}>Mystic</button>
-        <button onClick={() => handleTeamChange("instinct")}>Instinct</button>
+    <div className="w-[1000px] flex gap-12 pt-12">
+      <div className="flex flex-col gap-12 items-baseline">
+        <Dialog>
+          <DialogTrigger>
+            <span className={buttonVariants({ variant: "default" })}>
+              Add your profile
+            </span>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add your profile</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </DialogDescription>
+              <form
+                ref={ref}
+                action={async (formData) => {
+                  await submitForm(formData);
+                  ref.current?.reset();
+                  setFilters({ team: null, tags: null });
+                }}
+                className="flex flex-col mt-8 mb-8"
+              >
+                <input name={"username"} placeholder="Username"></input>
+                <input name={"code"} placeholder="Friend code"></input>
+                {/* <input name={"team"} placeholder="Team"></input> */}
+                <select name={"team"} placeholder="Select your team">
+                  <option value="">Select your team</option>
+                  <option value="valor">Valor</option>
+                  <option value="mystic">Mystic</option>
+                  <option value="instinct">Instinct</option>
+                </select>
+                <textarea
+                  name={"message"}
+                  placeholder="Type your message here"
+                ></textarea>
+                <Button>Submit</Button>
+              </form>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+
+        <RadioGroup
+          defaultValue={filters.team ? filters.team : "all-teams"}
+          onValueChange={handleRadioTeamChange}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="all-teams" id="all-teams" />
+            <Label htmlFor="all-teams">All teams</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="mystic" id="mystic" />
+            <Label htmlFor="mystic">Mystic</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="valor" id="valor" />
+            <Label htmlFor="valor">Valor</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="instinct" id="instinct" />
+            <Label htmlFor="instinct">Instinct</Label>
+          </div>
+        </RadioGroup>
+
+        <RadioGroup
+          defaultValue={filters.tags ? filters.tags : "all-tags"}
+          onValueChange={handleRadioTagsChange}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="all-tags" id="all-tags" />
+            <Label htmlFor="all-tags">All tags</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="gifts" id="gifts" />
+            <Label htmlFor="gifts">Gifts</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="raids" id="raids" />
+            <Label htmlFor="raids">Raids</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="trades" id="trades" />
+            <Label htmlFor="trades">Trades</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="pvp" id="pvp" />
+            <Label htmlFor="pvp">PvP</Label>
+          </div>
+        </RadioGroup>
       </div>
 
-      <div className="flex gap-4">
-        <button onClick={() => handleTagsChange()}>All tags</button>
-        <button onClick={() => handleTagsChange("gifts")}>Gifts</button>
-        <button onClick={() => handleTagsChange("raids")}>Raids</button>
-        <button onClick={() => handleTagsChange("pvp")}>PvP</button>
-        <button onClick={() => handleTagsChange("trades")}>Trades</button>
-      </div>
-
-      <form
-        ref={ref}
-        action={async (formData) => {
-          await submitForm(formData);
-          ref.current?.reset();
-          setFilters({ team: null, tags: null });
-        }}
-        className="flex flex-col mt-8 mb-8"
-      >
-        <input name={"username"} placeholder="Username"></input>
-        <input name={"code"} placeholder="Friend code"></input>
-        {/* <input name={"team"} placeholder="Team"></input> */}
-        <select name={"team"} placeholder="Select your team">
-          <option value="">Select your team</option>
-          <option value="valor">Valor</option>
-          <option value="mystic">Mystic</option>
-          <option value="instinct">Instinct</option>
-        </select>
-        <textarea
-          name={"message"}
-          placeholder="Type your message here"
-        ></textarea>
-        <button>Submit</button>
-      </form>
-
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         {players.map(({ username, code, team, tags, message, level }) => (
           <>
             <Player
@@ -138,10 +202,10 @@ export default function PlayerList({
             <Separator />
           </>
         ))}
+        <Button variant="outline" onClick={handleLoadMore}>
+          Load more
+        </Button>
       </div>
-      <Button variant="outline" onClick={handleLoadMore}>
-        Load more
-      </Button>
     </div>
   );
 }

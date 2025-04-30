@@ -1,5 +1,6 @@
 import { formatCode } from "@/app/lib/formatting";
 import TeamBadge from "@/app/ui/team-badge";
+import { Badge } from "@/components/ui/badge";
 
 export default function Player({ username, code, team, tags, message, level }) {
   return (
@@ -11,7 +12,7 @@ export default function Player({ username, code, team, tags, message, level }) {
       <div className="flex gap-4">
         {tags?.map((tag) => (
           <div className="text-sm uppercase text-gray-400" key={tag}>
-            {tag}
+            <Badge variant="outline">{tag}</Badge>
           </div>
         ))}
       </div>
