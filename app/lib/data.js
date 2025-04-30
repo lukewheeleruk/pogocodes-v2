@@ -18,6 +18,7 @@ const justGetWhatWeNeed = (playerObject) => {
     team: playerObject.team,
     tags: playerObject.tags,
     message: playerObject.message,
+    level: playerObject.level,
   };
 };
 
@@ -29,7 +30,7 @@ const buildFirestoreQuery = (filters, cursor) => {
   if (filters?.tags) {
     q = query(q, where("tags", "array-contains", filters.tags));
   }
-  q = query(q, orderBy("lastBump", "desc"), limit(2));
+  q = query(q, orderBy("lastBump", "desc"), limit(5));
   if (cursor) {
     q = query(q, startAfter(cursor));
   }

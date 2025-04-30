@@ -14,9 +14,7 @@ export async function addProfile(formData) {
     message: formData.get("message"),
     lastBump: Timestamp.now(),
   };
-
   await addDoc(collection(db, "dev_profiles"), rawFormData);
-
   revalidatePath("/");
   redirect("/");
 }

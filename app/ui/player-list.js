@@ -7,6 +7,10 @@ import { useRouter, usePathname } from "next/navigation";
 import { addProfile } from "@/app/lib/actions";
 import Player from "@/app/ui/player";
 
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { updateLevelOnAllRecords } from "@/seed";
+
 export default function PlayerList({
   initialPlayers,
   initialCursor,
@@ -78,7 +82,7 @@ export default function PlayerList({
   };
 
   return (
-    <div>
+    <div className="w-[800px]">
       <div className="flex gap-4">
         <button onClick={() => handleTeamChange()}>All teams</button>
         <button onClick={() => handleTeamChange("valor")}>Valor</button>
@@ -105,7 +109,13 @@ export default function PlayerList({
       >
         <input name={"username"} placeholder="Username"></input>
         <input name={"code"} placeholder="Friend code"></input>
-        <input name={"team"} placeholder="Team"></input>
+        {/* <input name={"team"} placeholder="Team"></input> */}
+        <select name={"team"} placeholder="Select your team">
+          <option value="">Select your team</option>
+          <option value="valor">Valor</option>
+          <option value="mystic">Mystic</option>
+          <option value="instinct">Instinct</option>
+        </select>
         <textarea
           name={"message"}
           placeholder="Type your message here"
@@ -114,18 +124,24 @@ export default function PlayerList({
       </form>
 
       <div className="flex flex-col gap-4">
-        {players.map(({ username, code, team, tags, message }) => (
-          <Player
-            username={username}
-            code={code}
-            team={team}
-            tags={tags}
-            message={message}
-            key={code}
-          />
+        {players.map(({ username, code, team, tags, message, level }) => (
+          <>
+            <Player
+              username={username}
+              code={code}
+              team={team}
+              tags={tags}
+              message={message}
+              level={level}
+              key={code}
+            />
+            <Separator />
+          </>
         ))}
       </div>
-      <button onClick={handleLoadMore}>Load more</button>
+      <Button variant="outline" onClick={handleLoadMore}>
+        Load more
+      </Button>
     </div>
   );
 }

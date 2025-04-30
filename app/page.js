@@ -2,6 +2,7 @@ import { getPlayers } from "@/app/lib/data";
 import PlayerList from "@/app/ui/player-list";
 
 export default async function Home({ searchParams }) {
+  console.log(searchParams);
   const { players, cursor } = await getPlayers(searchParams);
   return (
     <main className="flex justify-center">
