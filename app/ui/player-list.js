@@ -188,18 +188,15 @@ export default function PlayerList({
 
       <div className="flex flex-col gap-4 w-full">
         {players.map(({ username, code, team, tags, message, level }) => (
-          <>
-            <Player
-              username={username}
-              code={code}
-              team={team}
-              tags={tags}
-              message={message}
-              level={level}
-              key={code}
-            />
-            <Separator />
-          </>
+          <Player
+            username={username}
+            code={code}
+            team={team}
+            tags={tags}
+            message={message}
+            level={level}
+            key={code}
+          />
         ))}
         <Button variant="outline" onClick={handleLoadMore}>
           Load more

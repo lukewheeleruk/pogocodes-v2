@@ -1,6 +1,7 @@
 import { formatCode } from "@/app/lib/formatting";
 import TeamBadge from "@/app/ui/team-badge";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export default function Player({ username, code, team, tags, message, level }) {
   return (
@@ -20,6 +21,7 @@ export default function Player({ username, code, team, tags, message, level }) {
       <div className="flex flex-row-reverse">
         <h4 className="font-medium font-mono text-xl">{formatCode(code)}</h4>
       </div>
+      <Separator />
     </div>
   );
 }
