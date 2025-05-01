@@ -5,11 +5,8 @@ import { useRef } from "react";
 import { getPlayers } from "@/app/lib/data";
 import { useRouter, usePathname } from "next/navigation";
 import { addProfile } from "@/app/lib/actions";
-import Player from "@/app/ui/player";
-
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
 import {
   Dialog,
   DialogContent,
@@ -18,9 +15,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+
+import Player from "@/app/ui/player";
 
 export default function PlayerList({
   initialPlayers,
@@ -97,6 +95,7 @@ export default function PlayerList({
   return (
     <div className="w-[1000px] flex gap-12 pt-12">
       <div className="flex flex-col gap-12 items-baseline">
+        {/* <Image src="/new-logo-color.svg" width={100} height={16} /> */}
         <Dialog>
           <DialogTrigger>
             <span className={buttonVariants({ variant: "default" })}>
