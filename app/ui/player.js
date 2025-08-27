@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Player({ username, code, team, tags, message, level }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <h2 className="text-xl font-medium">{username}</h2>
         <TeamBadge team={team} level={level} />
