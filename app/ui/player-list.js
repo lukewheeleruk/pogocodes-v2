@@ -6,7 +6,6 @@ import { getPlayers } from "@/app/lib/data";
 import { useRouter, usePathname } from "next/navigation";
 import { addProfile } from "@/app/lib/actions";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
   DialogContent,
