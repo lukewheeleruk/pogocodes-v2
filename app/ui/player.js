@@ -10,7 +10,7 @@ export default function Player({ username, code, team, tags, message, level }) {
         <h2 className="text-xl font-medium">{username}</h2>
         <TeamBadge team={team} level={level} />
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-1">
         {tags?.map((tag) => (
           <div className="text-sm uppercase text-gray-400" key={tag}>
             <Badge variant="outline">{tag}</Badge>

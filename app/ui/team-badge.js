@@ -1,5 +1,3 @@
-import { formatTeamNameForBadge } from "@/app/lib/formatting";
-
 export default function TeamBadge({ team, level }) {
   let bgClass = "rounded-full px-2 flex items-center ";
   let textClass = "text-sm uppercase font-medium ";
