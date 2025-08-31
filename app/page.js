@@ -1,6 +1,8 @@
 import HomePage from "@/app/ui/HomePage";
 import { getPlayers } from "@/app/lib/data";
 
+//this should work
+
 export default async function Page({ searchParams }) {
   // Await searchParams to make it safe
   const params = await searchParams;
