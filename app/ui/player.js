@@ -1,5 +1,5 @@
 import { formatCode } from "@/app/lib/formatting";
-import TeamBadge from "@/app/ui/team-badge";
+import TeamBadge from "@/app/ui/TeamBadge";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
