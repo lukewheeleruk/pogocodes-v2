@@ -2,8 +2,9 @@
 
 import { useRef } from "react";
 import { usePlayers } from "@/app/lib/hooks/usePlayers";
-import Sidebar from "@/app/ui/Sidebar";
+import Controls from "@/app/ui/Controls";
 import PlayerList from "@/app/ui/PlayerList";
+import SkyscraperAdArea from "@/app/ui/SkyscraperAdArea";
 
 export default function HomePage({
   initialPlayers,
@@ -24,8 +25,9 @@ export default function HomePage({
   } = usePlayers({ initialPlayers, initialCursor, initialFilters });
 
   return (
-    <div className="w-[1000px] mx-auto flex gap-12 pt-12">
-      <Sidebar
+    // <div className="w-[1000px] mx-auto flex gap-12">
+    <div className="flex flex-col lg:flex-row">
+      <Controls
         filters={filters}
         setFilters={setFilters}
         setTeamFilter={setTeamFilter}
@@ -33,12 +35,12 @@ export default function HomePage({
         submitProfile={submitProfile}
         formRef={formRef}
       />
-
       <PlayerList
         players={players}
         handleLoadMore={handleLoadMore}
         loading={loading}
       />
+      <SkyscraperAdArea />
     </div>
   );
 }

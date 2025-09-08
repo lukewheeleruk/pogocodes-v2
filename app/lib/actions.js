@@ -9,8 +9,9 @@ export async function addProfile(formData) {
   const rawFormData = {
     username: formData.get("username"),
     team: formData.get("team"),
+    level: formData.get("level"),
     code: formData.get("code"),
-    tags: formData.get("tags"),
+    tags: formData.getAll("tags"), // 👈 now an array
     message: formData.get("message"),
     lastBump: Timestamp.now(),
   };

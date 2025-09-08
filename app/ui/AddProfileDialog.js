@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectTrigger,
@@ -35,7 +36,7 @@ export default function AddProfileDialog({ onProfileAdded, resetFilters }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add your profile</Button>
+        <Button className="w-full">Add your profile</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -65,18 +66,54 @@ export default function AddProfileDialog({ onProfileAdded, resetFilters }) {
             <Input id="code" name="code" placeholder="XXXX XXXX XXXX" />
           </div>
 
+          {/* Team + Level side by side */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="team">Team</Label>
+              <Select name="team">
+                <SelectTrigger id="team">
+                  <SelectValue placeholder="Select your team" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="valor">Valor</SelectItem>
+                  <SelectItem value="mystic">Mystic</SelectItem>
+                  <SelectItem value="instinct">Instinct</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="level">Player Level</Label>
+              <Select name="level">
+                <SelectTrigger id="level">
+                  <SelectValue placeholder="Select your level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 50 }, (_, i) => (
+                    <SelectItem key={i + 1} value={(i + 1).toString()}>
+                      {i + 1}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           <div className="flex flex-col gap-2">
-            <Label htmlFor="team">Team</Label>
-            <Select name="team">
-              <SelectTrigger id="team">
-                <SelectValue placeholder="Select your team" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="valor">Valor</SelectItem>
-                <SelectItem value="mystic">Mystic</SelectItem>
-                <SelectItem value="instinct">Instinct</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label>Tags</Label>
+            <div className="flex flex-wrap gap-4">
+              {["raids", "gifts", "pvp", "trades"].map((tag) => {
+                const inputId = `form-tag-${tag}`; // unique ID for the form
+                return (
+                  <div key={tag} className="flex items-center space-x-2">
+                    <Checkbox id={inputId} name="tags" value={tag} />
+                    <Label htmlFor={inputId} className="capitalize">
+                      {tag}
+                    </Label>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">
