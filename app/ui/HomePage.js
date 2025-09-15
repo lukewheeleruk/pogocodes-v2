@@ -25,8 +25,7 @@ export default function HomePage({
   } = usePlayers({ initialPlayers, initialCursor, initialFilters });
 
   return (
-    // <div className="w-[1000px] mx-auto flex gap-12">
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col lg:flex-row lg:max-w-[1280px] mx-auto">
       <Controls
         filters={filters}
         setFilters={setFilters}

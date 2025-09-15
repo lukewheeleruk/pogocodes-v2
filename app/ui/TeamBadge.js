@@ -1,6 +1,6 @@
 export default function TeamBadge({ team, level }) {
   let bgClass = "rounded-full px-2 flex items-center ";
-  let textClass = "text-sm uppercase font-medium ";
+  let textClass = "text-md uppercase font-medium ";
   switch (team) {
     case "mystic":
       textClass += "text-blue-500";

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function PlayerList({ players, handleLoadMore, loading }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       <div className="flex flex-col w-full border-l border-r">
         {players.map(({ username, code, team, tags, message, level }) => (
           <Player
