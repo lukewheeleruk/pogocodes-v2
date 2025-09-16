@@ -3,6 +3,8 @@ import { Copy, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCode } from "@/app/lib/formatting";
 import TeamBadge from "@/app/ui/TeamBadge";
+import { createAvatar } from "@dicebear/core";
+import { adventurer } from "@dicebear/collection";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +13,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QRCode from "react-qr-code";
+import Image from "next/image";
 
 export default function PlayerControlButtons({ username, team, level, code }) {
   const [copied, setCopied] = useState(false);
+
+  const avatar = createAvatar(adventurer, {
+    seed: code,
+    size: 96,
+    radius: 50,
+    backgroundColor: ["b6e3f4", "c0aede", "ffdfbf", "ffbde4", "ffffb3"],
+  }).toDataUri();
 
   const handleCopy = async () => {
     try {
@@ -46,16 +56,24 @@ export default function PlayerControlButtons({ username, team, level, code }) {
         <DialogContent className="flex flex-col items-center gap-4">
           <DialogHeader>
             <DialogTitle>
-              <div className="flex gap-2">
-                <h2 className="text-2xl font-bold">{username}</h2>
-                <TeamBadge team={team} level={level} />
+              <div className="flex flex-col justify-center gap-2">
+                <div className="flex">
+                  <Image
+                    src={avatar}
+                    alt={`${username}'s avatar`}
+                    width={128}
+                    height={128}
+                    className="rounded-full mx-auto"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <h2 className="text-2xl font-bold">{username}</h2>
+                  <TeamBadge team={team} level={level} />
+                </div>
               </div>
             </DialogTitle>
           </DialogHeader>
           <QRCode value={code} size={200} />
-          <p className="text-sm text-gray-500">
-            Scan this code in Pokémon Go to add as a friend
-          </p>
         </DialogContent>
       </Dialog>
     </>

@@ -1,11 +1,29 @@
+import Image from "next/image";
 import TeamBadge from "@/app/ui/TeamBadge";
 import { Badge } from "@/components/ui/badge";
 import PlayerControlButtons from "@/app/ui/PlayerControlButtons";
+import { createAvatar } from "@dicebear/core";
+import { adventurer } from "@dicebear/collection";
 
 export default function Player({ username, code, team, tags, message, level }) {
+  const avatar = createAvatar(adventurer, {
+    seed: code,
+    size: 72,
+    radius: 50,
+    backgroundColor: ["b6e3f4", "c0aede", "ffdfbf", "ffbde4", "ffffb3"],
+  }).toDataUri();
+
   return (
-    <div className="flex flex-row p-6 border-b gap-4">
-      <div className="flex w-32 bg-gray-200"></div>
+    <div className="flex flex-row p-4 border-b gap-4">
+      <div>
+        <Image
+          src={avatar}
+          alt={`${username}'s avatar`}
+          width={72}
+          height={72}
+          className="rounded-full"
+        />
+      </div>
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex gap-2">
           <h2 className="text-2xl font-bold">{username}</h2>
