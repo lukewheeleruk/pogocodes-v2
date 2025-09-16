@@ -18,7 +18,12 @@ export default function Player({ username, code, team, tags, message, level }) {
       </div>
       <p className="pt-2 text-gray-600">{message}</p>
       <div className="flex flex-row-reverse gap-4 mt-2">
-        <PlayerControlButtons code={code} />
+        <PlayerControlButtons
+          code={code}
+          username={username}
+          team={team}
+          level={level}
+        />
       </div>
     </div>
   );
