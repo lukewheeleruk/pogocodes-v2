@@ -1,6 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectTrigger,
@@ -23,6 +24,12 @@ export default function Filters({ filters, setFilters }) {
       tags: value === "all-tags" ? null : value,
     });
   };
+
+  const handleClearFilters = () => {
+    setFilters({ team: null, tags: null });
+  };
+
+  const isAnyFilterActive = filters.team || filters.tags;
 
   return (
     <div className="flex flex-col sm:flex-row lg:flex-col gap-6 w-full">
@@ -64,6 +71,18 @@ export default function Filters({ filters, setFilters }) {
           </SelectContent>
         </Select>
       </div>
+
+      {isAnyFilterActive && (
+        <div className="w-full mt-2">
+          <Button
+            variant="outline"
+            onClick={handleClearFilters}
+            className="w-full"
+          >
+            Clear all filters
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

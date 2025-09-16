@@ -53,7 +53,7 @@ export default function PlayerControlButtons({ username, team, level, code }) {
             <LayoutGrid className="w-5 h-5" strokeWidth={3} />
           </Button>
         </DialogTrigger>
-        <DialogContent className="flex flex-col items-center gap-4">
+        <DialogContent className="flex flex-col items-center gap-4 w-fit">
           <DialogHeader>
             <DialogTitle>
               <div className="flex flex-col justify-center gap-2">
@@ -61,8 +61,8 @@ export default function PlayerControlButtons({ username, team, level, code }) {
                   <Image
                     src={avatar}
                     alt={`${username}'s avatar`}
-                    width={128}
-                    height={128}
+                    width={96}
+                    height={96}
                     className="rounded-full mx-auto"
                   />
                 </div>
