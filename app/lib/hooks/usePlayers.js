@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getPlayers } from "@/app/lib/data";
-import { addProfile } from "@/app/lib/actions";
 
 export function usePlayers({
   initialPlayers = [],
@@ -68,14 +67,6 @@ export function usePlayers({
     }));
   };
 
-  const submitProfile = async (formData) => {
-    await addProfile(formData);
-    // Refresh default list after submit (matches your current behavior)
-    const data = await getPlayers();
-    setPlayers(data.players);
-    setCursor(data.cursor);
-  };
-
   return {
     players,
     cursor,
@@ -85,6 +76,5 @@ export function usePlayers({
     setTeamFilter,
     setTagsFilter,
     handleLoadMore,
-    submitProfile,
   };
 }

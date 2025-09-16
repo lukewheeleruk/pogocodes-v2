@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import { usePlayers } from "@/app/lib/hooks/usePlayers";
 import Controls from "@/app/ui/Controls";
 import PlayerList from "@/app/ui/PlayerList";
@@ -11,29 +10,15 @@ export default function HomePage({
   initialCursor,
   initialFilters,
 }) {
-  const formRef = useRef(null);
-
-  const {
-    players,
-    filters,
-    loading,
-    setFilters,
-    setTeamFilter,
-    setTagsFilter,
-    handleLoadMore,
-    submitProfile,
-  } = usePlayers({ initialPlayers, initialCursor, initialFilters });
+  const { players, filters, loading, setFilters, handleLoadMore } = usePlayers({
+    initialPlayers,
+    initialCursor,
+    initialFilters,
+  });
 
   return (
     <div className="flex flex-col lg:flex-row lg:max-w-[1280px] mx-auto">
-      <Controls
-        filters={filters}
-        setFilters={setFilters}
-        setTeamFilter={setTeamFilter}
-        setTagsFilter={setTagsFilter}
-        submitProfile={submitProfile}
-        formRef={formRef}
-      />
+      <Controls filters={filters} setFilters={setFilters} />
       <PlayerList
         players={players}
         handleLoadMore={handleLoadMore}
