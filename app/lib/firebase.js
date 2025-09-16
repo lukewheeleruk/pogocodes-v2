@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const config = {
-  apiKey: "AIzaSyCUM0z5WyBY1VesYX4WIJJpLTs9kZBIQOk",
-  authDomain: "pogocodesapp.firebaseapp.com",
-  projectId: "pogocodesapp",
-  storageBucket: "pogocodesapp.appspot.com",
-  messagingSenderId: "345714766257",
-  appId: "1:345714766257:web:15fa75e0d5de6dd7b88d90",
-  measurementId: "G-C87W1DVEHC",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(config);
