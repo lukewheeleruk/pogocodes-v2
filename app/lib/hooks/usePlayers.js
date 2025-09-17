@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 import { getPlayers } from "@/app/lib/data";
 
 export function usePlayers({
@@ -41,6 +43,32 @@ export function usePlayers({
     fetchPlayers();
   }, [filters, pathname, replace]);
 
+  const submitProfile = async (profileData, user) => {
+    if (!user) throw new Error("Must be signed in to submit a profile.");
+
+    const docRef = doc(db, "dev_profiles", user.uid);
+
+    // 🔎 Check if profile exists already
+    const snap = await getDoc(docRef);
+    const exists = snap.exists();
+
+    const rawData = {
+      ...profileData,
+      lastBump: Timestamp.now(),
+      uid: user.uid,
+    };
+
+    // ✅ setDoc with merge updates if exists, creates if not
+    await setDoc(docRef, rawData, { merge: true });
+
+    // 🔄 refresh players list
+    const data = await getPlayers();
+    setPlayers(data.players);
+    setCursor(data.cursor);
+
+    return exists ? "updated" : "created";
+  };
+
   const handleLoadMore = async () => {
     if (!cursor) return;
     setLoading(true);
@@ -76,5 +104,6 @@ export function usePlayers({
     setTeamFilter,
     setTagsFilter,
     handleLoadMore,
+    submitProfile,
   };
 }

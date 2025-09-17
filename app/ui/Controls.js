@@ -5,16 +5,26 @@ import { auth } from "@/app/lib/firebase";
 import AddProfileDialog from "./AddProfileDialog";
 import Filters from "./Filters";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/lib/hooks/useAuth";
 import { signOut } from "firebase/auth";
 
-export default function Controls({ filters, setFilters }) {
-  const { user, profile } = useAuth();
+export default function Controls({
+  filters,
+  setFilters,
+  submitProfile,
+  user,
+  profile,
+  setProfile,
+}) {
   const router = useRouter();
   return (
     <div className="flex flex-col justify-between p-6 lg:sticky lg:top-0 lg:h-screen lg:flex-none lg:w-60">
       <div className="flex flex-col gap-12">
-        <AddProfileDialog />
+        <AddProfileDialog
+          submitProfile={submitProfile}
+          profile={profile}
+          setProfile={setProfile}
+          user={user}
+        />
         <Filters filters={filters} setFilters={setFilters} />
       </div>
       <div className="flex flex-col gap-2">
