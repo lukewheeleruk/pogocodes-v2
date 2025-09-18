@@ -40,17 +40,17 @@ export default function PlayerControlButtons({ username, team, level, code }) {
       <Button
         variant="outline"
         onClick={handleCopy}
-        className="flex items-center gap-4 font-mono w-64"
+        className="flex items-center gap-2 font-mono w-48"
       >
-        <Copy className="w-5 h-5" strokeWidth={3} />
-        <h4 className="font-bold text-lg">
+        <Copy className="w-5 h-5" strokeWidth={2} />
+        <h4 className="text-base font-bold">
           {copied ? "Copied" : formatCode(code)}
         </h4>
       </Button>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">
-            <LayoutGrid className="w-5 h-5" strokeWidth={3} />
+            <LayoutGrid className="w-5 h-5" strokeWidth={2} />
           </Button>
         </DialogTrigger>
         <DialogContent className="flex flex-col items-center gap-4 w-fit">
@@ -74,6 +74,7 @@ export default function PlayerControlButtons({ username, team, level, code }) {
             </DialogTitle>
           </DialogHeader>
           <QRCode value={code} size={200} />
+          <p className="text-lg font-bold font-mono">{formatCode(code)}</p>
         </DialogContent>
       </Dialog>
     </>

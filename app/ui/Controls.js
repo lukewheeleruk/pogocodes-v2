@@ -20,14 +20,14 @@ export default function Controls() {
         <Filters />
       </div>
       <div className="flex flex-col gap-2">
-        <div>
+        {/* <div>
           <p className="text-xs">Firebase UID</p>
           <p className="text-xs font-bold">{user?.uid}</p>
         </div>
         <div>
           <p className="text-xs">Profile</p>
           <p className="text-xs font-bold">{profile?.username}</p>
-        </div>
+        </div> */}
         {user ? (
           <Button
             variant="secondary"

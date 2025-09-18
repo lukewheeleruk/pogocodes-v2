@@ -11,14 +11,18 @@ import {
   where,
 } from "firebase/firestore";
 
-const justGetWhatWeNeed = (playerObject) => {
+// Clean up Firestore data for client use
+const transformPlayer = (docSnap) => {
+  const data = docSnap.data();
   return {
-    username: playerObject.username,
-    code: playerObject.code,
-    team: playerObject.team,
-    tags: playerObject.tags,
-    message: playerObject.message,
-    level: playerObject.level,
+    id: docSnap.id, // keep UID as unique identifier
+    username: data.username,
+    code: data.code,
+    team: data.team,
+    tags: data.tags,
+    message: data.message,
+    level: data.level,
+    lastBump: data.lastBump ? data.lastBump.toMillis() : null, // ✅ JSON-safe
   };
 };
 
@@ -41,13 +45,16 @@ export async function getPlayers(filters, cursorDocId) {
   const players = [];
   let cursor = null;
   let docSnap = null;
+
   if (cursorDocId) {
     docSnap = await getDoc(doc(db, "dev_profiles", cursorDocId));
   }
+
   const querySnapshot = await getDocs(buildFirestoreQuery(filters, docSnap));
   querySnapshot.forEach((doc) => {
-    players.push(justGetWhatWeNeed(doc.data()));
+    players.push(transformPlayer(doc));
     cursor = doc.id;
   });
-  return { players: players, cursor: cursor };
+
+  return { players, cursor };
 }
