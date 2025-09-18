@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { getPlayers } from "@/app/lib/data";
 
-export function usePlayers({
+const PlayersContext = createContext(null);
+
+export function PlayersProvider({
+  children,
   initialPlayers = [],
   initialCursor = null,
   initialFilters = { team: null, tags: null },
-} = {}) {
+}) {
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
   const [filters, setFilters] = useState(initialFilters);
@@ -19,7 +22,7 @@ export function usePlayers({
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  // Fetch on filter changes + sync URL
+  // 🔄 Fetch when filters change + sync URL
   useEffect(() => {
     const fetchPlayers = async () => {
       setLoading(true);
@@ -28,6 +31,7 @@ export function usePlayers({
         setPlayers(data.players);
         setCursor(data.cursor);
 
+        // Sync filters to URL
         const urlParams = new URLSearchParams(filters);
         filters.team
           ? urlParams.set("team", filters.team)
@@ -43,12 +47,12 @@ export function usePlayers({
     fetchPlayers();
   }, [filters, pathname, replace]);
 
+  // 📝 Submit profile
   const submitProfile = async (profileData, user) => {
     if (!user) throw new Error("Must be signed in to submit a profile.");
 
     const docRef = doc(db, "dev_profiles", user.uid);
 
-    // 🔎 Check if profile exists already
     const snap = await getDoc(docRef);
     const exists = snap.exists();
 
@@ -58,10 +62,9 @@ export function usePlayers({
       uid: user.uid,
     };
 
-    // ✅ setDoc with merge updates if exists, creates if not
     await setDoc(docRef, rawData, { merge: true });
 
-    // 🔄 refresh players list
+    // Refresh players list
     const data = await getPlayers();
     setPlayers(data.players);
     setCursor(data.cursor);
@@ -95,15 +98,28 @@ export function usePlayers({
     }));
   };
 
-  return {
-    players,
-    cursor,
-    filters,
-    loading,
-    setFilters,
-    setTeamFilter,
-    setTagsFilter,
-    handleLoadMore,
-    submitProfile,
-  };
+  return (
+    <PlayersContext.Provider
+      value={{
+        players,
+        cursor,
+        filters,
+        loading,
+        setFilters,
+        setTeamFilter,
+        setTagsFilter,
+        handleLoadMore,
+        submitProfile,
+      }}
+    >
+      {children}
+    </PlayersContext.Provider>
+  );
+}
+
+export function usePlayersContext() {
+  const ctx = useContext(PlayersContext);
+  if (!ctx)
+    throw new Error("usePlayersContext must be used within PlayersProvider");
+  return ctx;
 }

@@ -6,26 +6,18 @@ import AddProfileDialog from "./AddProfileDialog";
 import Filters from "./Filters";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
+import { useAuthContext } from "@/app/lib/context/AuthContext";
 
-export default function Controls({
-  filters,
-  setFilters,
-  submitProfile,
-  user,
-  profile,
-  setProfile,
-}) {
+export default function Controls() {
+  const { user, profile } = useAuthContext();
+
   const router = useRouter();
+
   return (
     <div className="flex flex-col justify-between p-6 lg:sticky lg:top-0 lg:h-screen lg:flex-none lg:w-60">
       <div className="flex flex-col gap-12">
-        <AddProfileDialog
-          submitProfile={submitProfile}
-          profile={profile}
-          setProfile={setProfile}
-          user={user}
-        />
-        <Filters filters={filters} setFilters={setFilters} />
+        <AddProfileDialog />
+        <Filters />
       </div>
       <div className="flex flex-col gap-2">
         <div>

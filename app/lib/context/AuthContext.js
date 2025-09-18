@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
 
-export function useAuth() {
+const AuthContext = createContext(null);
+
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    // Listen for auth state changes
+    // 🔄 Listen for Firebase auth state
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
 
@@ -23,15 +25,21 @@ export function useAuth() {
       const ref = doc(db, "dev_profiles", firebaseUser.uid);
       const snap = await getDoc(ref);
 
-      if (snap.exists()) {
-        setProfile(snap.data());
-      } else {
-        setProfile(null);
-      }
+      setProfile(snap.exists() ? snap.data() : null);
     });
 
     return unsubscribe;
   }, []);
 
-  return { user, profile, setProfile };
+  return (
+    <AuthContext.Provider value={{ user, profile, setProfile }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuthContext() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuthContext must be used within AuthProvider");
+  return ctx;
 }

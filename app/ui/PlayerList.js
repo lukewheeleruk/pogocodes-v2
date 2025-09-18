@@ -1,9 +1,11 @@
 "use client";
 
+import { usePlayersContext } from "@/app/lib/context/PlayersContext";
 import Player from "@/app/ui/Player";
 import { Button } from "@/components/ui/button";
 
-export default function PlayerList({ players, handleLoadMore, loading }) {
+export default function PlayerList() {
+  const { players, handleLoadMore, loading } = usePlayersContext();
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col w-full border-l border-r">

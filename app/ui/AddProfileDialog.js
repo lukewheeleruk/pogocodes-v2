@@ -1,5 +1,6 @@
 "use client";
-
+import { useAuthContext } from "@/app/lib/context/AuthContext";
+import { usePlayersContext } from "@/app/lib/context/PlayersContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -22,12 +23,10 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function AddProfileDialog({
-  submitProfile,
-  profile,
-  setProfile,
-  user,
-}) {
+export default function AddProfileDialog() {
+  const { user, profile, setProfile } = useAuthContext();
+  const { submitProfile } = usePlayersContext();
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
 

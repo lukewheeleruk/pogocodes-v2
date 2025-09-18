@@ -1,5 +1,6 @@
 "use client";
 
+import { usePlayersContext } from "@/app/lib/context/PlayersContext";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export default function Filters({ filters, setFilters }) {
+export default function Filters() {
+  const { filters, setFilters } = usePlayersContext();
   const handleTeamChange = (value) => {
     setFilters({
       ...filters,
