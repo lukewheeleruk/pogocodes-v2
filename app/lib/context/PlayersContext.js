@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { getPlayers } from "@/app/lib/data";
+import { profileSchema } from "@/app/lib/profileSchema";
 
 const PlayersContext = createContext(null);
 
@@ -51,13 +52,22 @@ export function PlayersProvider({
   const submitProfile = async (profileData, user) => {
     if (!user) throw new Error("Must be signed in to submit a profile.");
 
+    // ✅ Validate with Zod before writing to Firestore
+    const parsed = profileSchema.safeParse(profileData);
+    if (!parsed.success) {
+      // throw the first error message, or you could return parsed.error.format()
+      throw new Error(parsed.error.errors[0].message);
+    }
+
+    const validData = parsed.data; // guaranteed to conform to schema
+
     const docRef = doc(db, "dev_profiles", user.uid);
 
     const snap = await getDoc(docRef);
     const exists = snap.exists();
 
     const rawData = {
-      ...profileData,
+      ...validData,
       lastBump: Timestamp.now(),
       uid: user.uid,
     };
