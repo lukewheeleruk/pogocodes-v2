@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAuthContext } from "@/app/lib/context/AuthContext";
 import { usePlayersContext } from "@/app/lib/context/PlayersContext";
 import { useEffect } from "react";
@@ -30,6 +31,7 @@ import {
 export default function SubmitProfileForm({ onClose }) {
   const { user, profile, setProfile } = useAuthContext();
   const { submitProfile } = usePlayersContext();
+  const [locLoading, setLocLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -40,6 +42,7 @@ export default function SubmitProfileForm({ onClose }) {
       level: "",
       tags: [],
       message: "",
+      location: null,
     },
   });
 
@@ -53,9 +56,50 @@ export default function SubmitProfileForm({ onClose }) {
         level: profile.level || "",
         tags: profile.tags || [],
         message: profile.message || "",
+        location: profile.location || null,
       });
     }
   }, [profile, form]);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setLocLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Reverse geocode using OpenStreetMap Nominatim
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await res.json();
+          const city = data.address?.city || data.address?.town || "";
+          const country = data.address?.country || "";
+
+          form.setValue("location", {
+            lat: latitude,
+            lng: longitude,
+            city,
+            country,
+          });
+        } catch (err) {
+          console.error("Error fetching location info:", err);
+        } finally {
+          setLocLoading(false);
+        }
+      },
+      (error) => {
+        alert("Unable to retrieve your location");
+        setLocLoading(false);
+      }
+    );
+  };
 
   const tagOptions = ["raids", "gifts", "pvp", "trades"];
 
@@ -193,6 +237,22 @@ export default function SubmitProfileForm({ onClose }) {
             </FormItem>
           )}
         />
+
+        <div className="flex flex-col gap-2">
+          <Button type="button" onClick={getLocation} disabled={locLoading}>
+            {locLoading ? "Getting location..." : "Use My Location"}
+          </Button>
+
+          {form.getValues("location") && (
+            <p className="text-sm text-gray-600">
+              {form.getValues("location").city
+                ? `${form.getValues("location").city}, ${
+                    form.getValues("location").country
+                  }`
+                : "Location obtained"}
+            </p>
+          )}
+        </div>
 
         <Button type="submit" className="w-full">
           {profile ? "Update Profile" : "Add Profile"}

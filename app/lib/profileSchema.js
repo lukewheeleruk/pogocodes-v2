@@ -17,4 +17,13 @@ export const profileSchema = z.object({
     }),
   tags: z.array(z.string()).optional(),
   message: z.string().max(200, "Max 200 characters").optional(),
+  location: z
+    .object({
+      lat: z.number(),
+      lng: z.number(),
+      city: z.string().optional(),
+      country: z.string().optional(),
+      display: z.string().optional(),
+    })
+    .optional(),
 });

@@ -22,6 +22,7 @@ const transformPlayer = (docSnap) => {
     tags: data.tags,
     message: data.message,
     level: data.level,
+    location: data.location || null,
     lastBump: data.lastBump ? data.lastBump.toMillis() : null, // ✅ JSON-safe
   };
 };

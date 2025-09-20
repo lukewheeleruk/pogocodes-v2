@@ -70,6 +70,14 @@ export function PlayersProvider({
       ...validData,
       lastBump: Timestamp.now(),
       uid: user.uid,
+      location: validData.location
+        ? {
+            ...validData.location,
+            display: `${validData.location.city || ""}${
+              validData.location.city && validData.location.country ? ", " : ""
+            }${validData.location.country || ""}`,
+          }
+        : null,
     };
 
     await setDoc(docRef, rawData, { merge: true });

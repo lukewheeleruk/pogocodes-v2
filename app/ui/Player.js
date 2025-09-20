@@ -1,5 +1,6 @@
 import Image from "next/image";
 import TeamBadge from "@/app/ui/TeamBadge";
+import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import PlayerControlButtons from "@/app/ui/PlayerControlButtons";
 import { createAvatar } from "@dicebear/core";
@@ -14,6 +15,7 @@ export default function Player({
   message,
   level,
   lastBump,
+  location,
 }) {
   const avatar = createAvatar(adventurer, {
     seed: code,
@@ -44,13 +46,21 @@ export default function Player({
           </p>
         </div>
 
-        <div className="flex gap-2">
+        {location && (
+          <div className="flex gap-2 align-center items-center text-sm">
+            <MapPin className="w-4 h-4 text-gray-500" />
+            <p className="text-sm text-gray-600">{location.display}</p>
+          </div>
+        )}
+
+        <div className="flex gap-2 items-center flex-wrap">
           {tags?.map((tag) => (
             <Badge variant="secondary" className="text-xs uppercase" key={tag}>
               {tag}
             </Badge>
           ))}
         </div>
+
         <p className="text-gray-600">{message}</p>
         <div className="flex flex-row-reverse gap-4">
           <PlayerControlButtons
