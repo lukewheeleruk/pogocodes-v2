@@ -27,8 +27,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { getRandomLocation } from "@/app/lib/testLocations";
-
 export default function SubmitProfileForm({ onClose }) {
   const { user, profile, setProfile } = useAuthContext();
   const { submitProfile } = usePlayersContext();
