@@ -7,6 +7,7 @@ export default async function Page({ searchParams }) {
   const initialFilters = {
     team: params.team ?? null,
     tags: params.tags ?? null,
+    country: params.country ?? null,
   };
 
   const { players: initialPlayers, cursor: initialCursor } = await getPlayers(
