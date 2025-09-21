@@ -35,6 +35,9 @@ const buildFirestoreQuery = (filters, cursor) => {
   if (filters?.tags) {
     q = query(q, where("tags", "array-contains", filters.tags));
   }
+  if (filters?.country) {
+    q = query(q, where("location.country", "==", filters.country));
+  }
   q = query(q, orderBy("lastBump", "desc"), limit(5));
   if (cursor) {
     q = query(q, startAfter(cursor));
@@ -58,4 +61,15 @@ export async function getPlayers(filters, cursorDocId) {
   });
 
   return { players, cursor };
+}
+
+export async function getCountries() {
+  const countries = [];
+  const querySnapshot = await getDocs(
+    query(collection(db, "dev_countries"), orderBy("name", "asc"))
+  );
+  querySnapshot.forEach((doc) => {
+    countries.push(doc.data());
+  });
+  return countries;
 }

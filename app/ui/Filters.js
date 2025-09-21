@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export default function Filters() {
+export default function Filters({ countries }) {
   const { filters, setFilters } = usePlayersContext();
   const handleTeamChange = (value) => {
     setFilters({
@@ -24,6 +24,13 @@ export default function Filters() {
     setFilters({
       ...filters,
       tags: value === "all-tags" ? null : value,
+    });
+  };
+
+  const handleCountryChange = (value) => {
+    setFilters({
+      ...filters,
+      country: value === "all-countries" ? null : value,
     });
   };
 
@@ -70,6 +77,27 @@ export default function Filters() {
             <SelectItem value="raids">Raids</SelectItem>
             <SelectItem value="trades">Trades</SelectItem>
             <SelectItem value="pvp">PvP</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Country Filter */}
+      <div className="flex flex-col gap-2 w-full">
+        <Label htmlFor="country-filter">Country</Label>
+        <Select
+          onValueChange={handleCountryChange}
+          value={filters.country || "all-countries"}
+        >
+          <SelectTrigger id="country-filter">
+            <SelectValue placeholder="Select a country" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all-countries">All countries</SelectItem>
+            {countries.map((country, i) => (
+              <SelectItem key={i + 1} value={country.name}>
+                {country.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

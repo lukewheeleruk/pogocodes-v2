@@ -1,5 +1,5 @@
 import HomePage from "@/app/ui/HomePage";
-import { getPlayers } from "@/app/lib/data";
+import { getPlayers, getCountries } from "@/app/lib/data";
 
 export default async function Page({ searchParams }) {
   const params = await searchParams;
@@ -13,11 +13,14 @@ export default async function Page({ searchParams }) {
     initialFilters
   );
 
+  const countries = await getCountries();
+
   return (
     <HomePage
       initialPlayers={initialPlayers}
       initialCursor={initialCursor}
       initialFilters={initialFilters}
+      countries={countries}
     />
   );
 }

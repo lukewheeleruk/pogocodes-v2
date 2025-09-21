@@ -40,6 +40,9 @@ export function PlayersProvider({
         filters.tags
           ? urlParams.set("tags", filters.tags)
           : urlParams.delete("tags");
+        filters.country
+          ? urlParams.set("country", filters.country)
+          : urlParams.delete("country");
         replace(`${pathname}?${urlParams.toString()}`);
       } finally {
         setLoading(false);
@@ -82,6 +85,19 @@ export function PlayersProvider({
 
     await setDoc(docRef, rawData, { merge: true });
 
+    // 🔹 Add country to countries collection
+    if (validData.location?.country) {
+      const countryDocRef = doc(
+        db,
+        "dev_countries",
+        validData.location.country
+      );
+      const snap = await getDoc(countryDocRef);
+      if (!snap.exists()) {
+        await setDoc(countryDocRef, { name: validData.location.country });
+      }
+    }
+
     // Refresh players list
     const data = await getPlayers();
     setPlayers(data.players);
@@ -102,20 +118,6 @@ export function PlayersProvider({
     }
   };
 
-  const setTeamFilter = (value) => {
-    setFilters((prev) => ({
-      ...prev,
-      team: value === "all-teams" ? null : value,
-    }));
-  };
-
-  const setTagsFilter = (value) => {
-    setFilters((prev) => ({
-      ...prev,
-      tags: value === "all-tags" ? null : value,
-    }));
-  };
-
   return (
     <PlayersContext.Provider
       value={{
@@ -124,8 +126,6 @@ export function PlayersProvider({
         filters,
         loading,
         setFilters,
-        setTeamFilter,
-        setTagsFilter,
         handleLoadMore,
         submitProfile,
       }}

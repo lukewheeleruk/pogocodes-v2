@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "@/app/lib/profileSchema";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +26,8 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+
+import { getRandomLocation } from "@/app/lib/testLocations";
 
 export default function SubmitProfileForm({ onClose }) {
   const { user, profile, setProfile } = useAuthContext();

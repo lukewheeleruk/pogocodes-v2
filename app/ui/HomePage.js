@@ -10,6 +10,7 @@ export default function HomePage({
   initialPlayers,
   initialCursor,
   initialFilters,
+  countries,
 }) {
   return (
     <AuthProvider>
@@ -19,7 +20,7 @@ export default function HomePage({
         initialFilters={initialFilters}
       >
         <div className="flex flex-col lg:flex-row lg:max-w-[1280px] mx-auto">
-          <Controls />
+          <Controls countries={countries} />
           <PlayerList />
           <SkyscraperAdArea />
         </div>
