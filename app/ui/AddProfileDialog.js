@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuthContext } from "@/app/lib/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,7 @@ import SubmitProfileForm from "@/app/ui/SubmitProfileForm";
 export default function AddProfileDialog() {
   const { profile, user } = useAuthContext();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   if (!user) {
     return (

@@ -13,32 +13,25 @@ import {
 
 export default function Filters({ countries }) {
   const { filters, setFilters } = usePlayersContext();
-  const handleTeamChange = (value) => {
-    setFilters({
-      ...filters,
-      team: value === "all-teams" ? null : value,
-    });
-  };
 
-  const handleTagsChange = (value) => {
+  const handleFilterChange = (filterName, value, defaultValue) => {
     setFilters({
       ...filters,
-      tags: value === "all-tags" ? null : value,
-    });
-  };
-
-  const handleCountryChange = (value) => {
-    setFilters({
-      ...filters,
-      country: value === "all-countries" ? null : value,
+      [filterName]: value === defaultValue ? null : value,
     });
   };
 
   const handleClearFilters = () => {
-    setFilters({ team: null, tags: null });
+    setFilters(
+      Object.keys(filters).reduce((acc, key) => {
+        acc[key] = null;
+        return acc;
+      }, {})
+    );
   };
 
-  const isAnyFilterActive = filters.team || filters.tags;
+  // check if any filter is active to conditionally render "Clear all filters" button
+  const isAnyFilterActive = Object.values(filters).some(Boolean);
 
   return (
     <div className="flex flex-col sm:flex-row lg:flex-col gap-6 w-full">
@@ -46,7 +39,9 @@ export default function Filters({ countries }) {
       <div className="flex flex-col gap-2 w-full">
         <Label htmlFor="team-filter">Team</Label>
         <Select
-          onValueChange={handleTeamChange}
+          onValueChange={(value) =>
+            handleFilterChange("team", value, "all-teams")
+          }
           value={filters.team || "all-teams"}
         >
           <SelectTrigger id="team-filter">
@@ -65,7 +60,9 @@ export default function Filters({ countries }) {
       <div className="flex flex-col gap-2 w-full">
         <Label htmlFor="tags-filter">Tags</Label>
         <Select
-          onValueChange={handleTagsChange}
+          onValueChange={(value) =>
+            handleFilterChange("tags", value, "all-tags")
+          }
           value={filters.tags || "all-tags"}
         >
           <SelectTrigger id="tags-filter">
@@ -85,7 +82,9 @@ export default function Filters({ countries }) {
       <div className="flex flex-col gap-2 w-full">
         <Label htmlFor="country-filter">Country</Label>
         <Select
-          onValueChange={handleCountryChange}
+          onValueChange={(value) =>
+            handleFilterChange("country", value, "all-countries")
+          }
           value={filters.country || "all-countries"}
         >
           <SelectTrigger id="country-filter">

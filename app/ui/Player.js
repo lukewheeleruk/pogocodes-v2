@@ -30,28 +30,30 @@ export default function Player({
         <Image
           src={avatar}
           alt={`${username}'s avatar`}
-          width={64}
-          height={64}
-          className="rounded-full"
+          width={48}
+          height={48}
+          className="rounded-full lg:w-[64px] lg:h-[64px]"
         />
       </div>
       <div className="flex flex-1 flex-col gap-2">
-        <div className="flex flex-1 justify-between">
-          <div className="flex gap-2">
-            <h2 className="text-lg font-bold">{username}</h2>
-            <TeamBadge team={team} level={level} />
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-1 justify-between">
+            <div className="flex gap-2">
+              <h2 className="text-lg font-bold">{username}</h2>
+              <TeamBadge team={team} level={level} />
+            </div>
+            <p className="text-xs text-gray-500">
+              {formatDistanceToNow(new Date(lastBump), { addSuffix: true })}
+            </p>
           </div>
-          <p className="text-xs text-gray-500">
-            {formatDistanceToNow(new Date(lastBump), { addSuffix: true })}
-          </p>
-        </div>
 
-        {location && (
-          <div className="flex gap-2 align-center items-center text-sm">
-            <MapPin className="w-4 h-4 text-gray-500" />
-            <p className="text-sm text-gray-600">{location.display}</p>
-          </div>
-        )}
+          {location && (
+            <div className="flex gap-2 align-center items-center text-sm">
+              <MapPin className="w-4 h-4 text-gray-500" />
+              <p className="text-sm text-gray-600">{location.display}</p>
+            </div>
+          )}
+        </div>
 
         <div className="flex gap-2 items-center flex-wrap">
           {tags?.map((tag) => (

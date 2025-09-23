@@ -9,6 +9,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "@/app/lib/profileSchema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -147,7 +153,7 @@ export default function SubmitProfileForm({ onClose }) {
             control={form.control}
             name="team"
             render={({ field }) => (
-              <FormItem className="flex-1">
+              <FormItem className="flex-1" key={field.value}>
                 <FormLabel>Team</FormLabel>
                 <Select
                   onValueChange={field.onChange}
@@ -174,7 +180,7 @@ export default function SubmitProfileForm({ onClose }) {
             control={form.control}
             name="level"
             render={({ field }) => (
-              <FormItem className="flex-1">
+              <FormItem className="flex-1" key={field.value}>
                 <FormLabel>Player Level</FormLabel>
                 <Select
                   onValueChange={field.onChange}

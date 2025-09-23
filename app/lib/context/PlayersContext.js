@@ -28,26 +28,25 @@ export function PlayersProvider({
     const fetchPlayers = async () => {
       setLoading(true);
       try {
-        const data = await getPlayers(filters);
-        setPlayers(data.players);
-        setCursor(data.cursor);
+        // Fetch players based on current filters
+        const { players: fetchedPlayers, cursor: newCursor } = await getPlayers(
+          filters
+        );
+        setPlayers(fetchedPlayers);
+        setCursor(newCursor);
 
-        // Sync filters to URL
-        const urlParams = new URLSearchParams(filters);
-        filters.team
-          ? urlParams.set("team", filters.team)
-          : urlParams.delete("team");
-        filters.tags
-          ? urlParams.set("tags", filters.tags)
-          : urlParams.delete("tags");
-        filters.country
-          ? urlParams.set("country", filters.country)
-          : urlParams.delete("country");
+        // Sync filters to URL dynamically
+        const urlParams = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value != null) urlParams.set(key, value);
+        });
+
         replace(`${pathname}?${urlParams.toString()}`);
       } finally {
         setLoading(false);
       }
     };
+
     fetchPlayers();
   }, [filters, pathname, replace]);
 

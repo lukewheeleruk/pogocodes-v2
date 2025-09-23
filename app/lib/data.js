@@ -29,36 +29,46 @@ const transformPlayer = (docSnap) => {
 
 const buildFirestoreQuery = (filters, cursor) => {
   let q = query(collection(db, "dev_profiles"));
-  if (filters?.team) {
-    q = query(q, where("team", "==", filters.team));
-  }
-  if (filters?.tags) {
-    q = query(q, where("tags", "array-contains", filters.tags));
-  }
-  if (filters?.country) {
-    q = query(q, where("location.country", "==", filters.country));
-  }
+  // Define how each filter should be applied in Firestore
+  const filterMap = {
+    team: { field: "team", type: "==" },
+    tags: { field: "tags", type: "array-contains" },
+    country: { field: "location.country", type: "==" },
+    // future filters can just be added here
+    // e.g. level: { field: "level", type: "==" }
+  };
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value && filterMap[key]) {
+      const { field, type } = filterMap[key];
+      q = query(q, where(field, type, value));
+    }
+  });
+  // Always order and limit
   q = query(q, orderBy("lastBump", "desc"), limit(5));
+  // Apply cursor for pagination if provided
   if (cursor) {
     q = query(q, startAfter(cursor));
   }
+
   return q;
 };
 
 export async function getPlayers(filters, cursorDocId) {
-  const players = [];
-  let cursor = null;
-  let docSnap = null;
+  // Get Firestore document for cursor if provided
+  const cursorDoc = cursorDocId
+    ? await getDoc(doc(db, "dev_profiles", cursorDocId))
+    : null;
 
-  if (cursorDocId) {
-    docSnap = await getDoc(doc(db, "dev_profiles", cursorDocId));
-  }
+  // Build and execute query
+  const querySnapshot = await getDocs(buildFirestoreQuery(filters, cursorDoc));
 
-  const querySnapshot = await getDocs(buildFirestoreQuery(filters, docSnap));
-  querySnapshot.forEach((doc) => {
-    players.push(transformPlayer(doc));
-    cursor = doc.id;
-  });
+  // Transform documents
+  const players = querySnapshot.docs.map(transformPlayer);
+
+  // Set cursor to last document in snapshot (or null if empty)
+  const cursor = querySnapshot.docs.length
+    ? querySnapshot.docs[querySnapshot.docs.length - 1].id
+    : null;
 
   return { players, cursor };
 }

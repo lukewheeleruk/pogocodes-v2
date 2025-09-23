@@ -9,7 +9,7 @@ import { signOut } from "firebase/auth";
 import { useAuthContext } from "@/app/lib/context/AuthContext";
 
 export default function Controls({ countries }) {
-  const { user, profile } = useAuthContext();
+  const { user } = useAuthContext();
 
   const router = useRouter();
 
@@ -20,14 +20,6 @@ export default function Controls({ countries }) {
         <Filters countries={countries} />
       </div>
       <div className="flex flex-col gap-2">
-        {/* <div>
-          <p className="text-xs">Firebase UID</p>
-          <p className="text-xs font-bold">{user?.uid}</p>
-        </div>
-        <div>
-          <p className="text-xs">Profile</p>
-          <p className="text-xs font-bold">{profile?.username}</p>
-        </div> */}
         {user ? (
           <Button
             variant="secondary"
