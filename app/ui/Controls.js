@@ -1,5 +1,4 @@
 import Filters from "./Filters";
-import AddProfileDialog from "@/app/ui/AddProfileDialog";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";
 import { signOut } from "firebase/auth";
@@ -30,7 +29,6 @@ export default function Controls({ countries }) {
             profile to get added by other trainers!
           </p>
           <div className="flex flex-col items-center gap-2">
-            {/* <AddProfileDialog /> */}
             <Button onClick={handleAddProfileClick}>
               {profile ? "Bump your profile" : "Add your profile"}
             </Button>

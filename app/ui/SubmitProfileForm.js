@@ -252,7 +252,12 @@ export default function SubmitProfileForm() {
         />
 
         <div className="flex flex-col gap-2">
-          <Button type="button" onClick={getLocation} disabled={locLoading}>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={getLocation}
+            disabled={locLoading}
+          >
             {locLoading ? "Getting location..." : "Use My Location"}
           </Button>
 
