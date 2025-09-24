@@ -13,7 +13,7 @@ export function PlayersProvider({
   children,
   initialPlayers = [],
   initialCursor = null,
-  initialFilters = { team: null, tags: null },
+  initialFilters = { team: null, tags: null, country: null },
 }) {
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
