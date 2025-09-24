@@ -32,7 +32,7 @@ export default function Player({
           alt={`${username}'s avatar`}
           width={48}
           height={48}
-          className="rounded-full lg:w-[64px] lg:h-[64px]"
+          className="rounded-full"
         />
       </div>
       <div className="flex flex-1 flex-col gap-2">

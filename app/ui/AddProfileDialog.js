@@ -21,24 +21,20 @@ export default function AddProfileDialog() {
 
   if (!user) {
     return (
-      <Button className="w-full" onClick={() => router.push("/signin")}>
-        Add your profile
-      </Button>
+      <Button onClick={() => router.push("/signin")}>Add your profile</Button>
     );
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">
-          {profile ? "Update your profile" : "Add your profile"}
+        <Button className="w-64">
+          {profile ? "Bump profile" : "Add profile"}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {profile ? "Update your profile" : "Add your profile"}
-          </DialogTitle>
+          <DialogTitle>{profile ? "Bump profile" : "Add profile"}</DialogTitle>
           <DialogDescription>
             Fill in your trainer details below. Your profile will appear in the
             list immediately after submitting.
