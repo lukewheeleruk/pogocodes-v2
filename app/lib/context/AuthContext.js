@@ -21,11 +21,14 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // Fetch the profile document by UID
-      const ref = doc(db, "dev_profiles", firebaseUser.uid);
-      const snap = await getDoc(ref);
+      if (!profile) {
+        // Fetch the profile document by UID
+        console.log("Fetching profile");
+        const ref = doc(db, "dev_profiles", firebaseUser.uid);
+        const snap = await getDoc(ref);
 
-      setProfile(snap.exists() ? snap.data() : null);
+        setProfile(snap.exists() ? snap.data() : null);
+      }
     });
 
     return unsubscribe;
