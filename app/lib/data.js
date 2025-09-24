@@ -37,7 +37,7 @@ const buildFirestoreQuery = (filters, cursor) => {
     // future filters can just be added here
     // e.g. level: { field: "level", type: "==" }
   };
-  Object.entries(filters).forEach(([key, value]) => {
+  Object.entries(filters || {}).forEach(([key, value]) => {
     if (value && filterMap[key]) {
       const { field, type } = filterMap[key];
       q = query(q, where(field, type, value));

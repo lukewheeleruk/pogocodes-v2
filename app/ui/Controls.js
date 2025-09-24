@@ -1,12 +1,23 @@
 import Filters from "./Filters";
 import AddProfileDialog from "@/app/ui/AddProfileDialog";
+import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useAuthContext } from "@/app/lib/context/AuthContext";
 import { Button } from "@/components/ui/button";
 
 export default function Controls({ countries }) {
-  const { user } = useAuthContext();
+  const router = useRouter();
+  const { user, profile } = useAuthContext();
+
+  const handleAddProfileClick = () => {
+    if (user) {
+      router.push("/submit");
+    } else {
+      router.push("/signin");
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between">
       <div className="flex flex-col">
@@ -19,14 +30,13 @@ export default function Controls({ countries }) {
             profile to get added by other trainers!
           </p>
           <div className="flex flex-col items-center gap-2">
-            <AddProfileDialog />
+            {/* <AddProfileDialog /> */}
+            <Button onClick={handleAddProfileClick}>
+              {profile ? "Bump your profile" : "Add your profile"}
+            </Button>
 
             {user && (
-              <Button
-                variant="outline"
-                className="w-64"
-                onClick={() => signOut(auth)}
-              >
+              <Button variant="outline" onClick={() => signOut(auth)}>
                 Sign out
               </Button>
             )}

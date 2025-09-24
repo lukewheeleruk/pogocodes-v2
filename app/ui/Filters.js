@@ -160,7 +160,7 @@ export default function Filters({ countries }) {
             <Badge
               key={key}
               variant="secondary"
-              className="flex items-center gap-1 cursor-pointer"
+              className="flex items-center gap-1 cursor-pointer h-9 border-gray-200"
               onClick={() => handleClearFilter(key)}
             >
               {value}

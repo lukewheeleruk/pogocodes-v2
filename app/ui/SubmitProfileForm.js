@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/lib/context/AuthContext";
 import { usePlayersContext } from "@/app/lib/context/PlayersContext";
 import { useEffect } from "react";
@@ -9,12 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "@/app/lib/profileSchema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -33,9 +28,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export default function SubmitProfileForm({ onClose }) {
+export default function SubmitProfileForm() {
+  const router = useRouter();
   const { user, profile, setProfile } = useAuthContext();
   const { submitProfile } = usePlayersContext();
+  const [submitting, setSubmitting] = useState(false);
   const [locLoading, setLocLoading] = useState(false);
 
   const form = useForm({
@@ -109,9 +106,12 @@ export default function SubmitProfileForm({ onClose }) {
   const tagOptions = ["raids", "gifts", "pvp", "trades"];
 
   const onSubmit = async (values) => {
+    setSubmitting(true);
     await submitProfile(values, user);
     setProfile({ ...profile, ...values });
-    onClose?.();
+    sessionStorage.setItem("bumpedProfile", "true");
+    setSubmitting(false);
+    router.push("/");
   };
 
   return (
@@ -267,7 +267,7 @@ export default function SubmitProfileForm({ onClose }) {
           )}
         </div>
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={submitting}>
           {profile ? "Update Profile" : "Add Profile"}
         </Button>
       </form>
