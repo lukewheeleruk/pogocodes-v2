@@ -3,7 +3,7 @@ import { Copy, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCode } from "@/app/lib/formatting";
 import TeamBadge from "@/app/ui/TeamBadge";
-import { createAvatar } from "@dicebear/core";
+
 import { adventurer } from "@dicebear/collection";
 import {
   Dialog,
@@ -17,13 +17,6 @@ import Image from "next/image";
 
 export default function PlayerControlButtons({ username, team, level, code }) {
   const [copied, setCopied] = useState(false);
-
-  const avatar = createAvatar(adventurer, {
-    seed: code,
-    size: 96,
-    radius: 50,
-    backgroundColor: ["b6e3f4", "c0aede", "ffdfbf", "ffbde4", "ffffb3"],
-  }).toDataUri();
 
   const handleCopy = async () => {
     try {
@@ -57,15 +50,6 @@ export default function PlayerControlButtons({ username, team, level, code }) {
           <DialogHeader>
             <DialogTitle>
               <div className="flex flex-col justify-center gap-2">
-                <div className="flex">
-                  <Image
-                    src={avatar}
-                    alt={`${username}'s avatar`}
-                    width={96}
-                    height={96}
-                    className="rounded-full mx-auto"
-                  />
-                </div>
                 <div className="flex gap-2">
                   <h2 className="text-2xl font-bold">{username}</h2>
                   <TeamBadge team={team} level={level} />

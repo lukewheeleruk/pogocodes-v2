@@ -1,10 +1,7 @@
-import Image from "next/image";
 import TeamBadge from "@/app/ui/TeamBadge";
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import PlayerControlButtons from "@/app/ui/PlayerControlButtons";
-import { createAvatar } from "@dicebear/core";
-import { adventurer } from "@dicebear/collection";
 import { formatDistanceToNow } from "date-fns";
 
 export default function Player({
@@ -17,24 +14,8 @@ export default function Player({
   lastBump,
   location,
 }) {
-  const avatar = createAvatar(adventurer, {
-    seed: code,
-    size: 64,
-    radius: 50,
-    backgroundColor: ["b6e3f4", "c0aede", "ffdfbf", "ffbde4", "ffffb3"],
-  }).toDataUri();
-
   return (
     <div className="flex flex-row p-4 border-b gap-4">
-      <div>
-        <Image
-          src={avatar}
-          alt={`${username}'s avatar`}
-          width={48}
-          height={48}
-          className="rounded-full"
-        />
-      </div>
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-1">
           <div className="flex flex-1 justify-between">
