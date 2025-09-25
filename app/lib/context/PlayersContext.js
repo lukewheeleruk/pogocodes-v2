@@ -13,11 +13,10 @@ export function PlayersProvider({
   children,
   initialPlayers = [],
   initialCursor = null,
-  initialFilters = { team: null, tags: null, country: null },
 }) {
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
-  const [filters, setFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false);
 
   const pathname = usePathname();
@@ -34,21 +33,13 @@ export function PlayersProvider({
         );
         setPlayers(fetchedPlayers);
         setCursor(newCursor);
-
-        // Sync filters to URL dynamically
-        const urlParams = new URLSearchParams();
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value != null) urlParams.set(key, value);
-        });
-
-        replace(`${pathname}?${urlParams.toString()}`);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPlayers();
-  }, [filters, pathname, replace]);
+  }, [filters]);
 
   // 📝 Submit profile
   const submitProfile = async (profileData, user) => {

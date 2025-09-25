@@ -7,12 +7,7 @@ import Controls from "@/app/ui/Controls";
 import PlayerList from "@/app/ui/PlayerList";
 import { toast } from "sonner";
 
-export default function HomePage({
-  initialPlayers,
-  initialCursor,
-  initialFilters,
-  countries,
-}) {
+export default function HomePage({ initialPlayers, initialCursor, countries }) {
   useEffect(() => {
     if (sessionStorage.getItem("bumpedProfile") === "true") {
       toast.success("Profile bumped successfully.");
@@ -24,7 +19,6 @@ export default function HomePage({
       <PlayersProvider
         initialPlayers={initialPlayers}
         initialCursor={initialCursor}
-        initialFilters={initialFilters}
       >
         <div className="flex flex-col">
           <Controls countries={countries} />
