@@ -43,8 +43,9 @@ export default function SignInPage() {
             Login to your account
           </CardTitle>
           <CardDescription>
-            Sign in to add your profile, or to bump it up the feed if you've
-            previously added it.
+            {
+              "Sign in to add your profile, or to bump it up the feed if you've previously added it."
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
