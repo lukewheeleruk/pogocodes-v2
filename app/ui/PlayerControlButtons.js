@@ -33,19 +33,19 @@ export default function PlayerControlButtons({ username, team, level, code }) {
             <LayoutGrid className="w-5 h-5" strokeWidth={2} />
           </Button>
         </DialogTrigger>
-        <DialogContent className="flex flex-col items-center gap-4 w-fit">
+        <DialogContent className="flex flex-col items-center p-12 rounded-lg gap-8 w-fit">
           <DialogHeader>
             <DialogTitle>
               <div className="flex flex-col justify-center gap-2">
                 <div className="flex gap-2">
-                  <h2 className="text-2xl font-bold">{username}</h2>
+                  <h2 className="text-xl font-bold">{username}</h2>
                   <TeamBadge team={team} level={level} />
                 </div>
               </div>
             </DialogTitle>
           </DialogHeader>
           <QRCode value={code} size={200} />
-          <p className="text-lg font-bold font-mono">{formatCode(code)}</p>
+          <p className="text-xl font-mono">{formatCode(code)}</p>
         </DialogContent>
       </Dialog>
       <Button

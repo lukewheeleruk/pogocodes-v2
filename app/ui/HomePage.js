@@ -3,7 +3,7 @@
 import { AuthProvider } from "@/app/lib/context/AuthContext";
 import { PlayersProvider } from "@/app/lib/context/PlayersContext";
 import { useEffect } from "react";
-import Controls from "@/app/ui/Controls";
+import Header from "@/app/ui/Header";
 import PlayerList from "@/app/ui/PlayerList";
 import { toast } from "sonner";
 
@@ -21,7 +21,7 @@ export default function HomePage({ initialPlayers, initialCursor, countries }) {
         initialCursor={initialCursor}
       >
         <div className="flex flex-col">
-          <Controls countries={countries} />
+          <Header countries={countries} />
           <PlayerList />
         </div>
       </PlayersProvider>

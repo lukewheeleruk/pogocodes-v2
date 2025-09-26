@@ -8,7 +8,7 @@ export default function PlayerList() {
   const { players, handleLoadMore, loading } = usePlayersContext();
   return (
     <div className="flex flex-col flex-1">
-      <div className="flex flex-col w-full border-l border-r">
+      <div className="flex flex-col w-full px-4 gap-4">
         {players.map((player) => (
           <Player {...player} key={player.code} />
         ))}
