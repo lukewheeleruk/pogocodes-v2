@@ -14,7 +14,12 @@ export default function PlayerList() {
         ))}
       </div>
       <div className="py-6 mx-auto">
-        <Button className="w-64" onClick={handleLoadMore} disabled={loading}>
+        <Button
+          variant="outline"
+          className="w-64"
+          onClick={handleLoadMore}
+          disabled={loading}
+        >
           {loading ? "Loading..." : "Load more"}
         </Button>
       </div>

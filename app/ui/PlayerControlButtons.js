@@ -3,8 +3,6 @@ import { Copy, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCode } from "@/app/lib/formatting";
 import TeamBadge from "@/app/ui/TeamBadge";
-
-import { adventurer } from "@dicebear/collection";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QRCode from "react-qr-code";
-import Image from "next/image";
 
 export default function PlayerControlButtons({ username, team, level, code }) {
   const [copied, setCopied] = useState(false);
@@ -30,16 +27,6 @@ export default function PlayerControlButtons({ username, team, level, code }) {
 
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={handleCopy}
-        className="flex items-center gap-2 font-mono w-48"
-      >
-        <Copy className="w-5 h-5" strokeWidth={2} />
-        <h4 className="text-base font-bold">
-          {copied ? "Copied" : formatCode(code)}
-        </h4>
-      </Button>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">
@@ -61,6 +48,16 @@ export default function PlayerControlButtons({ username, team, level, code }) {
           <p className="text-lg font-bold font-mono">{formatCode(code)}</p>
         </DialogContent>
       </Dialog>
+      <Button
+        variant="outline"
+        onClick={handleCopy}
+        className="flex items-center gap-2 font-mono w-48"
+      >
+        <Copy className="w-5 h-5" strokeWidth={2} />
+        <h4 className="text-base font-bold">
+          {copied ? "Copied" : formatCode(code)}
+        </h4>
+      </Button>
     </>
   );
 }

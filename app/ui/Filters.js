@@ -57,6 +57,8 @@ export default function Filters({ countries }) {
 
   const isAnyTempFilterActive = Object.values(tempFilters).some(Boolean);
 
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+
   return (
     <div className="flex items-center justify-between gap-4">
       {/* Filters button */}
@@ -64,7 +66,11 @@ export default function Filters({ countries }) {
         <SheetTrigger asChild>
           <Button variant="outline" className="flex items-center gap-2">
             <ListFilter size={16} />
-            Filters
+            {activeFilterCount > 0 && (
+              <Badge className="h-4 w-4 flex items-center justify-center rounded-full p-0 text-xs">
+                {Object.values(filters).filter(Boolean).length}
+              </Badge>
+            )}
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="">
