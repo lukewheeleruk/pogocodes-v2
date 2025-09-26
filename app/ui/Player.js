@@ -17,8 +17,9 @@ export default function Player({
   return (
     <article className="flex p-4 border-b gap-4">
       <section className="flex-1 flex flex-col gap-2">
-        {/* Header: username, team badge, timestamp */}
+        {/* Section: to keep location and header together without a gap for better flow */}
         <section>
+          {/* Header: username, team badge, timestamp */}
           <header className="flex justify-between items-start">
             <h2 className="flex gap-2 items-center text-lg font-bold">
               {username}
@@ -55,7 +56,7 @@ export default function Player({
         )}
 
         {/* Message */}
-        <p className="text-gray-600">{message}</p>
+        <p className="text-muted-foreground">{message}</p>
 
         {/* Footer: controls */}
         <footer className="flex justify-end gap-4">
