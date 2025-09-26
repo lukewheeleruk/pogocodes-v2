@@ -15,7 +15,7 @@ export default function Player({
   location,
 }) {
   return (
-    <article className="flex p-4 border-b gap-4">
+    <article className="flex p-4 border gap-4 m-4 rounded-lg shadow-md">
       <section className="flex-1 flex flex-col gap-2">
         {/* Section: to keep location and header together without a gap for better flow */}
         <section>
