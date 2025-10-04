@@ -27,6 +27,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { MapPin } from "lucide-react";
 
 export default function SubmitProfileForm() {
   const router = useRouter();
@@ -116,7 +117,10 @@ export default function SubmitProfileForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className=" w-full space-y-4 mt-4"
+      >
         {/* Username */}
         <FormField
           control={form.control}
@@ -252,23 +256,27 @@ export default function SubmitProfileForm() {
         />
 
         <div className="flex flex-col gap-2">
+          <FormLabel>Location</FormLabel>
           <Button
             variant="outline"
             type="button"
             onClick={getLocation}
             disabled={locLoading}
           >
-            {locLoading ? "Getting location..." : "Use My Location"}
+            {locLoading ? "Getting location..." : "Add my location"}
           </Button>
 
           {form.getValues("location") && (
-            <p className="text-sm text-gray-600">
-              {form.getValues("location").city
-                ? `${form.getValues("location").city}, ${
-                    form.getValues("location").country
-                  }`
-                : "Location obtained"}
-            </p>
+            <div className="flex gap-1 items-center">
+              <MapPin className="w-4 h-4 text-gray-500" />
+              <span className="text-gray-600">
+                {form.getValues("location").city
+                  ? `${form.getValues("location").city}, ${
+                      form.getValues("location").country
+                    }`
+                  : "Location obtained"}
+              </span>
+            </div>
           )}
         </div>
 

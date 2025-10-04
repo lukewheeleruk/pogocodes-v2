@@ -45,7 +45,7 @@ export default function PlayerControlButtons({ username, team, level, code }) {
             </DialogTitle>
           </DialogHeader>
           <QRCode value={code} size={200} />
-          <p className="text-xl font-mono">{formatCode(code)}</p>
+          <p className="text-xl font-mono font-bold">{formatCode(code)}</p>
         </DialogContent>
       </Dialog>
       <Button

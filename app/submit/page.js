@@ -1,5 +1,6 @@
 import SubmitProfileForm from "@/app/ui/SubmitProfileForm";
 import localFont from "next/font/local";
+import { Card } from "@/components/ui/card";
 
 const myFont = localFont({
   src: "../../public/ZalandoSansExpanded-VariableFont_wght.ttf",
@@ -16,7 +17,9 @@ export default function SubmitPage() {
         Add or update your Pokemon Go friend code profile to connect with other
         trainers around the world!
       </p>
-      <SubmitProfileForm />
+      <Card className="w-full max-w-lg p-6">
+        <SubmitProfileForm />
+      </Card>
     </div>
   );
 }

@@ -36,7 +36,7 @@ export default function Player({
           {/* Location (optional) */}
           {location && (
             <div className="flex gap-1 items-center text-sm text-muted-foreground">
-              <MapPin className="w-3 h- text-gray-500" />
+              <MapPin className="w-3 h-3 text-gray-500" />
               <span>{location.display}</span>
             </div>
           )}

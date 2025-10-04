@@ -75,7 +75,7 @@ export default function Filters({ countries }) {
         </SheetTrigger>
         <SheetContent side="right" className="">
           <SheetHeader>
-            <SheetTitle>Filters</SheetTitle>
+            <SheetTitle className="text-3xl font-bold">Filters</SheetTitle>
           </SheetHeader>
 
           <div className="flex flex-col gap-6 mt-6">
