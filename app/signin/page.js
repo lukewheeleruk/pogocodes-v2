@@ -40,7 +40,7 @@ export default function SignInPage() {
       <Card className="mx-8">
         <CardHeader>
           <CardTitle className="text-lg font-bold">
-            Login to your account
+            Log in to your account
           </CardTitle>
           <CardDescription>
             {

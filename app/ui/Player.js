@@ -15,32 +15,31 @@ export default function Player({
   location,
 }) {
   return (
-    <article className="flex p-4 border gap-4 rounded-xl shadow-md">
+    <article className="flex p-4 border gap-4 rounded-xl">
       <section className="flex-1 flex flex-col gap-2">
         {/* Section: to keep location and header together without a gap for better flow */}
-        <section>
-          {/* Header: username, team badge, timestamp */}
-          <header className="flex justify-between items-start">
-            <h2 className="flex gap-2 items-center text-lg font-bold">
-              {username}
-              <TeamBadge team={team} level={level} />
-            </h2>
-            <time
-              dateTime={new Date(lastBump).toISOString()}
-              className="text-xs text-muted-foreground"
-            >
-              {formatDistanceToNow(new Date(lastBump), { addSuffix: true })}
-            </time>
-          </header>
 
-          {/* Location (optional) */}
-          {location && (
-            <div className="flex gap-1 items-center text-sm text-muted-foreground">
-              <MapPin className="w-3 h-3 text-gray-500" />
-              <span>{location.display}</span>
-            </div>
-          )}
-        </section>
+        {/* Header: username, team badge, timestamp */}
+        <header className="flex justify-between items-start">
+          <h2 className="flex gap-2 items-center text-2xl font-bold">
+            {username}
+            <TeamBadge team={team} level={level} />
+          </h2>
+          <time
+            dateTime={new Date(lastBump).toISOString()}
+            className="text-sm text-muted-foreground"
+          >
+            {formatDistanceToNow(new Date(lastBump), { addSuffix: true })}
+          </time>
+        </header>
+
+        {/* Location (optional) */}
+        {location && (
+          <div className="flex gap-1 items-center text-muted-foreground">
+            <MapPin className="w-4 h-4 text-gray-500" />
+            <span>{location.display}</span>
+          </div>
+        )}
 
         {/* Tags */}
         {tags?.length > 0 && (

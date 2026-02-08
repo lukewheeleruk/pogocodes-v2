@@ -67,7 +67,7 @@ export default function Filters({ countries }) {
           <Button variant="outline" className="flex items-center gap-2">
             <ListFilter size={16} />
             {activeFilterCount > 0 && (
-              <Badge className="h-4 w-4 flex items-center justify-center rounded-full p-0 text-xs">
+              <Badge className="h-4 w-4 flex items-center justify-center rounded-full p-0 text-xs bg-gray-500">
                 {Object.values(filters).filter(Boolean).length}
               </Badge>
             )}
