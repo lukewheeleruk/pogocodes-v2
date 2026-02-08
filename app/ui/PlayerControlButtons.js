@@ -29,7 +29,10 @@ export default function PlayerControlButtons({ username, team, level, code }) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">
+          <Button
+            variant="outline"
+            className="border-black bg-background hover:bg-[#63F3A0] hover:text-foreground"
+          >
             <LayoutGrid className="w-5 h-5" strokeWidth={2} />
           </Button>
         </DialogTrigger>
@@ -51,7 +54,7 @@ export default function PlayerControlButtons({ username, team, level, code }) {
       <Button
         variant="outline"
         onClick={handleCopy}
-        className="flex items-center gap-2 font-mono w-48"
+        className="flex items-center gap-2 font-mono w-48 border-black bg-background hover:bg-[#63F3A0] hover:text-foreground"
       >
         <Copy className="w-5 h-5" strokeWidth={2} />
         <h4 className="text-base font-bold">

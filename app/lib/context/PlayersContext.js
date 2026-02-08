@@ -1,11 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { getPlayers } from "@/app/lib/data";
 import { profileSchema } from "@/app/lib/profileSchema";
+import {
+  areFiltersEqual,
+  filtersFromSearchParams,
+  mergeFiltersIntoSearchParams,
+  normalizeFilters,
+} from "@/app/lib/filters";
 
 const PlayersContext = createContext(null);
 
@@ -13,17 +18,63 @@ export function PlayersProvider({
   children,
   initialPlayers = [],
   initialCursor = null,
+  initialFilters = {},
 }) {
   const [players, setPlayers] = useState(initialPlayers);
   const [cursor, setCursor] = useState(initialCursor);
-  const [filters, setFilters] = useState({});
+  const [filters, setFiltersState] = useState(normalizeFilters(initialFilters));
   const [loading, setLoading] = useState(false);
+  const hasFetchedOnceRef = useRef(false);
 
-  const pathname = usePathname();
-  const { replace } = useRouter();
+  const setFilters = (nextValue) => {
+    setFiltersState((prev) => {
+      const resolved =
+        typeof nextValue === "function" ? nextValue(prev) : nextValue;
+      return normalizeFilters(resolved);
+    });
+  };
 
-  // 🔄 Fetch when filters change + sync URL
+  // Keep local filters in sync with browser URL when user uses back/forward.
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const urlFilters = filtersFromSearchParams(params);
+      setFiltersState((prev) =>
+        areFiltersEqual(prev, urlFilters) ? prev : urlFilters
+      );
+    };
+
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
+
+  // Keep browser URL in sync with local filters without triggering route navigation.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const currentParams = new URLSearchParams(window.location.search);
+    const nextParams = mergeFiltersIntoSearchParams(currentParams, filters);
+    const currentQuery = currentParams.toString();
+    const nextQuery = nextParams.toString();
+
+    if (currentQuery === nextQuery) return;
+
+    const nextUrl = nextQuery
+      ? `${window.location.pathname}?${nextQuery}`
+      : window.location.pathname;
+    window.history.pushState(null, "", nextUrl);
+  }, [filters]);
+
+  // 🔄 Fetch when filters change
+  useEffect(() => {
+    // Skip duplicate initial client fetch; server already fetched initial state.
+    if (!hasFetchedOnceRef.current) {
+      hasFetchedOnceRef.current = true;
+      return;
+    }
+
     const fetchPlayers = async () => {
       setLoading(true);
       try {

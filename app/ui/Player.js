@@ -15,7 +15,7 @@ export default function Player({
   location,
 }) {
   return (
-    <article className="flex p-4 border gap-4 rounded-xl">
+    <article className="flex p-4 border border-border/80 bg-card/90 gap-4 rounded-xl shadow-sm transition-shadow hover:shadow-md">
       <section className="flex-1 flex flex-col gap-2">
         {/* Section: to keep location and header together without a gap for better flow */}
 
@@ -36,7 +36,7 @@ export default function Player({
         {/* Location (optional) */}
         {location && (
           <div className="flex gap-1 items-center text-muted-foreground">
-            <MapPin className="w-4 h-4 text-gray-500" />
+            <MapPin className="w-4 h-4 text-primary/70" />
             <span>{location.display}</span>
           </div>
         )}
@@ -55,7 +55,7 @@ export default function Player({
         )}
 
         {/* Message */}
-        <p className="text-muted-foreground">{message}</p>
+        <p className="text-muted-foreground leading-relaxed">{message}</p>
 
         {/* Footer: controls */}
         <footer className="flex justify-end gap-4">

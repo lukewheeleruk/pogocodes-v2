@@ -31,13 +31,13 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-6">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-6 px-4">
       <span
-        className={`text-4xl text-primary font-bold mb-16 ${myFont.className}`}
+        className={`text-4xl text-primary font-bold mb-8 ${myFont.className}`}
       >
         pogo.codes
       </span>
-      <Card className="mx-8">
+      <Card className="mx-8 w-full max-w-md border-border/70 bg-card/95 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-bold">
             Log in to your account
@@ -69,7 +69,7 @@ export default function SignInPage() {
           </div>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4 max-w-sm">
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
       </div>

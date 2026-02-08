@@ -8,7 +8,7 @@ export default function PlayerList() {
   const { players, handleLoadMore, loading } = usePlayersContext();
   return (
     <div className="flex flex-col flex-1">
-      <div className="flex flex-col w-full px-4 gap-4">
+      <div className="flex flex-col w-full px-0 sm:px-4 gap-4">
         {players.map((player) => (
           <Player {...player} key={player.code} />
         ))}
@@ -16,7 +16,8 @@ export default function PlayerList() {
       <div className="py-6 mx-auto">
         <Button
           variant="outline"
-          className="w-64"
+          size="lg"
+          className="w-72 bg-white border-black text-black hover:bg-white/90 hover:text-black"
           onClick={handleLoadMore}
           disabled={loading}
         >

@@ -1,4 +1,3 @@
-import Filters from "./Filters";
 import localFont from "next/font/local";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
@@ -11,14 +10,14 @@ const myFont = localFont({
   variable: "--font-zalando",
 });
 
-export default function Header({ countries }) {
+export default function Header() {
   const { user, profile } = useAuthContext();
 
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between mb-8 rounded-b-3xl">
       <div className="flex flex-col">
         <section className="flex justify-between items-center p-4 h-16">
-          <span className={`text-purple-600 font-bold ${myFont.className}`}>
+          <span className={`text-primary font-bold ${myFont.className}`}>
             pogo.codes
           </span>
           {user && (
@@ -30,20 +29,19 @@ export default function Header({ countries }) {
             </div>
           )}
         </section>
-        <div className="flex flex-col text-center p-8 gap-8">
-          <h1 className={`text-4xl font-bold text-balance ${myFont.className}`}>
+        <div className="flex flex-col text-center p-8 gap-7">
+          <h1
+            className={`text-6xl font-bold text-balance tracking-tight ${myFont.className}`}
+          >
             Browse Pokemon Go friend codes from around the world.
           </h1>
-          <p className="text-muted-foreground text-balance">
+          <p className="text-xl text-foreground/85 text-balance max-w-3xl mx-auto leading-snug">
             Filter by country, team, and tag such as gifts or raids. Add your
             profile to get added by other trainers!
           </p>
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-3 pt-1">
             <AddProfileButton profile={profile} user={user} />
           </div>
-        </div>
-        <div className="flex items-center p-4">
-          <Filters countries={countries} />
         </div>
       </div>
     </div>

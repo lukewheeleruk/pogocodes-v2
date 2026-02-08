@@ -56,7 +56,12 @@ export default function AddProfileButton({ profile, user }) {
   const bumpDisabled = profile && timeLeft > 0;
 
   return (
-    <Button size="lg" onClick={handleClick} disabled={bumpDisabled}>
+    <Button
+      size="lg"
+      className="min-w-64 h-14 px-8 text-lg font-semibold border border-black bg-black text-white hover:bg-black/80 hover:text-white hover:border-black shadow-sm hover:shadow-md"
+      onClick={handleClick}
+      disabled={bumpDisabled}
+    >
       {profile
         ? bumpDisabled
           ? `Bump profile in ${formatTime(timeLeft)}`

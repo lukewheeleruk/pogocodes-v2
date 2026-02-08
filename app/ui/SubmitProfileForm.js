@@ -268,8 +268,8 @@ export default function SubmitProfileForm() {
 
           {form.getValues("location") && (
             <div className="flex gap-1 items-center">
-              <MapPin className="w-4 h-4 text-gray-500" />
-              <span className="text-gray-600">
+              <MapPin className="w-4 h-4 text-primary/70" />
+              <span className="text-muted-foreground">
                 {form.getValues("location").city
                   ? `${form.getValues("location").city}, ${
                       form.getValues("location").country
